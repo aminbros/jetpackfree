@@ -10,14 +10,25 @@
 #import <Chartboost/Chartboost.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <AdSupport/AdSupport.h>
+#import "JetpackKnightViewController.h"
 
+@interface AppDelegate() <ChartboostDelegate>
+
+@end
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // replace view for game dev
+#ifdef GAME_DEV
+    if(YES) {
+        [_window setRootViewController:[[JetpackKnightViewController alloc] init]];
+        return NO;
+    }
+#endif
     // Override point for customization after application launch.
-  
+
     // Initialize the Chartboost library
     [Chartboost startWithAppId:@"5712cd0c43150f3600697abb"
                   appSignature:@"215d36f4b0a3b368323b3e6f6815c23e4d95cad7"
