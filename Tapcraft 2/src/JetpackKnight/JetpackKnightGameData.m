@@ -29,7 +29,7 @@ const NSString *JetpackKnightObstacleTag = @"obstacle";
                            positionYVariant:freeArea / 2.0 - 0.1
                                scaleVaraint:0];
     goi.every = 5;
-    goi.amount = 4;
+    goi.amount = 9;
     goi.protectOverlap = YES;
     goi.pickTemplateRandom = YES;
     c.genDiamondInfo = goi;
@@ -55,8 +55,8 @@ const NSString *JetpackKnightObstacleTag = @"obstacle";
         [self objectTemplatesInfoForObjects:gd.obstaclesObjectTemplate
                            positionYVariant:0
                                scaleVaraint:0.0];
-    goi.every = 5;
-    goi.amount = 2;
+    goi.every = 10;
+    goi.amount = 4;
     goi.protectOverlap = YES;
     goi.pickTemplateRandom = YES;
     c.genObstacleInfo = goi;
@@ -90,7 +90,7 @@ const NSString *JetpackKnightObstacleTag = @"obstacle";
         if(object.size.width > maxWidth)
             maxWidth = object.size.width;
     }
-    goi.every = maxWidth + 3;
+    goi.every = maxWidth + 5;
     goi.amount = 1;
     goi.pickTemplateRandom = YES;
     [genTilesInfo addObject:goi];
@@ -102,7 +102,7 @@ const NSString *JetpackKnightObstacleTag = @"obstacle";
                                    position:CGPointMake(0, 0.8)
                            positionYVariant:0.1
                                scaleVaraint:0.1];
-    goi.every = 2;
+    goi.every = 10;
     goi.amount = 1;
     goi.pickTemplateRandom = YES;
     [genTilesInfo addObject:goi];
@@ -132,7 +132,7 @@ const NSString *JetpackKnightObstacleTag = @"obstacle";
     gd.groundDrawable = [self objectImageDrawableWithName:@"ground.png"];
     gd.groundSize = gd.groundDrawable.imageRect.size;
     gd.groundY = gd.groundDrawable.imageRect.size.height;
- 
+     
     // add game data resources and drawables
     [characters addObject:[self mkCharacterA:gd]];
     gd.treesObjectTemplate = [self mkTreesTemplate:gd];
@@ -149,7 +149,7 @@ const NSString *JetpackKnightObstacleTag = @"obstacle";
     gd.characters = [characters copy];
 
     // decrease drawn objects for testing
-    gd.positionZs = @[@1];
+    // gd.positionZs = @[@1,@1.7,@3,@10];
 
     return gd;
 }
@@ -182,8 +182,8 @@ const NSString *JetpackKnightObstacleTag = @"obstacle";
     
     Object *o = [[Object alloc] init];
     o.position = CGPointMake(0, 0.8);
-    [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"diamond.png"] origin:@"center"];
-    o.zIndex = -1;
+    [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"cloud.png"] origin:@"center"];
+    o.zIndex = -4;
     o.positionZIndex = 3;
     // scale up to get the same size
     CGFloat scale = [[gd.positionZs objectAtIndex:o.positionZIndex] doubleValue];

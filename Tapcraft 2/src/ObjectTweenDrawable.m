@@ -12,7 +12,7 @@
                object:(Object*)object
        cameraHalfSize:(CGSize*)cameraHalfSize
          cameraCenter:(CGPoint*)cameraCenter
-               depth:(CGFloat)depth
+                depth:(CGFloat)depth
     timeInterval:(NSTimeInterval)timeInterval
 {
     if(!_pause) {

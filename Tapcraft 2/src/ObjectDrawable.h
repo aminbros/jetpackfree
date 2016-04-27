@@ -13,7 +13,7 @@
                object:(Object*)object
            cameraHalfSize:(CGSize*)cameraHalfSize
            cameraCenter:(CGPoint*)cameraCenter
-               depth:(CGFloat)depth
+                depth:(CGFloat)depth
         timeInterval:(NSTimeInterval)timeInterval;
 - (id)copyWithZone:(NSZone *)zone;
 
