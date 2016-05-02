@@ -6,9 +6,11 @@
 #import "GameDataGenerator.h"
 #import "ObjectImageDrawable.h"
 
-extern const NSString *JetpackKnightDiamondTag;
-extern const NSString *JetpackKnightRocketTag;
-extern const NSString *JetpackKnightObstacleTag;
+extern NSString * const JetpackKnightDiamondTag;
+extern NSString * const JetpackKnightRocketTag;
+extern NSString * const JetpackKnightObstacleTag;
+extern NSString * const JetpackKnightGroundTag;
+
 
 @interface JetpackKnightGameData : GameData
 
@@ -21,7 +23,10 @@ extern const NSString *JetpackKnightObstacleTag;
 
 @property CGFloat groundY;
 @property CGSize groundSize;
+@property NSString *groundTag;
 @property ObjectImageDrawable *groundDrawable;
+
+@property NSArray *players;
 
 + (GameDataGeneratorConfig*)createGeneratorConfigWithGameData:(JetpackKnightGameData*)gd landStart:(CGFloat)landStart landEnd:(CGFloat)landEnd;
 + (JetpackKnightGameData*)createInitialGameData;

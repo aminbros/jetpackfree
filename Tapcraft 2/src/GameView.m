@@ -62,10 +62,35 @@
                                 object:object
                         cameraHalfSize:&cameraHalfSize
                           cameraCenter:&camera.center
+                             cameraFOV:camera.fov
                                  depth:positionZ
                           timeInterval:_currentInterval];
     }
     CGContextRestoreGState(context);
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    [_touchDelegate touchesBegan:touches withEvent:event];
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    [_touchDelegate touchesEnded:touches withEvent:event];
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesMoved:touches withEvent:event];
+    [_touchDelegate touchesMoved:touches withEvent:event];
+}
+
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesCancelled:touches withEvent:event];
+    [_touchDelegate touchesCancelled:touches withEvent:event];
 }
 
 @end

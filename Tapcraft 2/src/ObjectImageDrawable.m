@@ -10,6 +10,7 @@
                object:(Object*)object
            cameraHalfSize:(CGSize*)cameraHalfSize
            cameraCenter:(CGPoint*)cameraCenter
+            cameraFOV:(CGFloat)cameraFOV
                 depth:(CGFloat)depth
     timeInterval:(NSTimeInterval)timeInterval
 {
@@ -21,6 +22,8 @@
     
     // scale 
     transform = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(object.scale.x, object.scale.y));
+    // rotate
+    transform = CGAffineTransformConcat(transform, CGAffineTransformMakeRotation(object.angle));
     
     // correct y position to fit in place
     CGPoint position = CGPointMake(object.position.x,
@@ -31,16 +34,22 @@
                           (position.x - cameraCenter->x,
                            position.y - cameraCenter->y);
     // depth effect
-    transform2 = CGAffineTransformConcat(transform2, CGAffineTransformMakeScale(1.0/depth, 1.0/depth));
+    transform2 = CGAffineTransformConcat(transform2, CGAffineTransformMakeScale(1.0/depth/cameraFOV, 1.0/depth/cameraFOV));
     
     
     transform2 =  CGAffineTransformConcat(transform2, CGAffineTransformMakeTranslation
-                                         (cameraHalfSize->width, cameraHalfSize->height));
+                                         (cameraHalfSize->width/cameraFOV, cameraHalfSize->height/cameraFOV));
     
     // combine transforms
     transform = CGAffineTransformConcat(transform, transform2);
     CGContextConcatCTM(context, transform);
-    CGContextDrawImage(context, CGRectMake(_imageRect.origin.x, _imageRect.origin.y, _imageRect.size.width, _imageRect.size.height), _image.CGImage);
+    CGContextDrawImage(context, _imageRect, _image.CGImage);
+#ifdef DEBUG
+    if(object.renderOutline) {
+        CGContextSetStrokeColorWithColor(context, object.renderOutlineColor.CGColor);
+        CGContextStrokeRectWithWidth(context, CGRectMake(0, 0, object.size.width, object.size.height), 1.0 / 70.0);
+    }
+#endif
     CGContextRestoreGState(context);
 }
 

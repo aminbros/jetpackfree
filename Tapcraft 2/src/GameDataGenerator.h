@@ -39,6 +39,7 @@
 @property CGFloat groundY;
 @property CGFloat groundHeight;
 @property CGFloat groundPieceWidth;
+@property NSString *groundTag;
 @property id <ObjectDrawable>groundDrawable;
 
 @end

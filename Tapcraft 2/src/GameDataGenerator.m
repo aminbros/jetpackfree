@@ -104,12 +104,14 @@
     CGFloat landEnd = config.landEnd;
     // build ground
     CGFloat x = config.landStart;
+    NSString  *groundTag = config.groundTag;
     CGFloat groundY = config.groundY;
     CGFloat groundHeight = config.groundHeight;
     CGFloat groundPieceWidth = config.groundPieceWidth;
     id <ObjectDrawable>groundDrawable = config.groundDrawable;
     while(x < landEnd) {
         Object *groundPiece = [[Object alloc] init];
+        groundPiece.tag = groundTag;
         groundPiece.position = CGPointMake(x, groundY);
         groundPiece.origin = CGPointMake(0, groundHeight); // at top of ground
         groundPiece.size = CGSizeMake(groundPieceWidth, groundHeight);

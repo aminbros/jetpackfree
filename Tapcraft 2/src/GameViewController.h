@@ -12,6 +12,9 @@
 @property GameData *gameData;
 @property Game *game;
 @property GameView *gameView;
+@property (nonatomic) Class gameClass;
+
+@property BOOL pauseSimulation;
 
 - (void)initializeGame;
 - (void)startGame;

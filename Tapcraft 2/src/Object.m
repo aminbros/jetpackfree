@@ -13,6 +13,9 @@
         _friction = 0.2;
         _scale.x = 1.0;
         _scale.y = 1.0;
+#ifdef DEBUG
+        _renderOutlineColor = [UIColor redColor];
+#endif
     }
     return self;
 }
@@ -27,12 +30,14 @@
     copyObj.zIndex = _zIndex;
     copyObj.drawable = [_drawable copyWithZone:zone];
     copyObj.positionZIndex = _positionZIndex;
-    copyObj.physicsNeedsUpdate = YES;
     copyObj.bodyType = _bodyType;
     copyObj.density = _density;
     copyObj.friction = _friction;
     copyObj.physicsActive = _physicsActive;
     copyObj.tag = _tag;
+    copyObj.angle = _angle;
+    copyObj.bodyFixedRotation = _bodyFixedRotation;
+    copyObj.isSensor = _isSensor;
     return copyObj;
 }
 
@@ -60,6 +65,14 @@
 
 - (NSComparisonResult)zIndexCompareRev:(Object*)other {
     return _zIndex > other.zIndex ? NSOrderedAscending : NSOrderedDescending;
+}
+
+-(BOOL)isEqual:(id)object {
+    return self == object;
+}
+
+-(NSUInteger)hash {
+    return (NSUInteger)self;
 }
 
 @end

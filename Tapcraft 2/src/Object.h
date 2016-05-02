@@ -21,12 +21,13 @@ typedef NS_ENUM(NSInteger, BodyType) {
 @property NSInteger zIndex; // helper for drawing in order
 @property id<ObjectDrawable> drawable;
 @property NSInteger positionZIndex;
+@property CGFloat angle;
 
-@property BOOL physicsNeedsUpdate;
-@property BOOL physicsBoxBoundNeedsUpdate;
 @property BodyType bodyType;
 @property CGFloat density; // The density, usually in kg/m^2.
 @property CGFloat friction; // the friction coefficient
+@property BOOL bodyFixedRotation;
+@property BOOL isSensor;
 // Not active object is not simulated and cannot be collided
 @property BOOL physicsActive;
 
@@ -34,13 +35,21 @@ typedef NS_ENUM(NSInteger, BodyType) {
 
 @property id objectGameInfo; // used in Game class
 
+#ifdef DEBUG
+// debug properties
+@property BOOL renderOutline;
+@property UIColor *renderOutlineColor;
+#endif
+
 - (Bound)computeBound;
 - (Bound)computeBoundRelativeToPosition;
 
 - (NSComparisonResult)zIndexCompare:(Object*)other;
 - (NSComparisonResult)zIndexCompareRev:(Object*)other;
 
-
 -(id)copyWithZone:(NSZone *)zone;
+
+-(BOOL)isEqual:(id)object;
+-(NSUInteger)hash;
 
 @end

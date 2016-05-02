@@ -36,7 +36,8 @@
 }
 
 - (void)initializeGame {
-    self.game = [[Game alloc] initWithGameData:self.gameData];
+    if(self.game == nil)
+        self.game = [[self.gameClass alloc] initWithGameData:self.gameData];
     self.gameView.game = self.game;
     self.game.viewSize = self.gameView.frame.size;
 }
@@ -51,13 +52,21 @@
 
 - (void)gameLoop:(CADisplayLink*)displayLink
 {
-    [self.game update];
+    if(!self.pauseSimulation)
+        [self.game update];
     NSTimeInterval timeInterval = [self.game.startDate timeIntervalSinceNow] * -1;
     if(timeInterval - _lastFrameUpdateTimeInterval > LEAST_WAIT_FOR_FRAME_UPDATE) {
         self.gameView.currentInterval = timeInterval - _lastFrameUpdateTimeInterval;
         [self.gameView setNeedsDisplay];
         _lastFrameUpdateTimeInterval = timeInterval;
     }
+}
+
+- (Class)gameClass
+{
+    if(_gameClass == nil)
+        _gameClass = [Game class];
+    return _gameClass;
 }
 
 @end

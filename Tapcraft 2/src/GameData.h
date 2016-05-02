@@ -5,6 +5,8 @@
 #import "Object.h"
 #import "Bound.h"
 
+@class GameSimulatorConfig;
+
 @interface GameData : NSObject
 
 @property NSArray *objects;
@@ -17,6 +19,8 @@
 @property CGFloat runningSpeed;
 @property CGFloat runningSpeedUpStep;
 @property CGFloat runningSpeedUpEvery;
+
+@property GameSimulatorConfig *simulatorConfig;
 
 @property Bound gameBound;
 

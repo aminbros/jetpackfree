@@ -140,6 +140,9 @@
 		942ABB0F1CCF09EC00B18D0E /* ObjectImageDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = 942ABB081CCF09EC00B18D0E /* ObjectImageDrawable.m */; };
 		942ABB101CCF09EC00B18D0E /* ObjectTweenDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = 942ABB0A1CCF09EC00B18D0E /* ObjectTweenDrawable.m */; };
 		942ABB141CCF914900B18D0E /* Bound.m in Sources */ = {isa = PBXBuildFile; fileRef = 942ABB131CCF914900B18D0E /* Bound.m */; };
+		942D6F791CD6FDED00000453 /* JetpackKnightGame.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D6F781CD6FDED00000453 /* JetpackKnightGame.m */; };
+		942D6F7F1CD72C1100000453 /* JetpackKnightController.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D6F7E1CD72C1100000453 /* JetpackKnightController.m */; };
+		942D6F821CD73F9600000453 /* JetpackKnightPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D6F811CD73F9600000453 /* JetpackKnightPlayer.m */; };
 		9479C4F81CCBAF2A003B1FF7 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9479C4F71CCBAF2A003B1FF7 /* GameViewController.m */; };
 		947C033C1CCBFEB2000E3172 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 947C02751CCBFEB2000E3172 /* b2BroadPhase.cpp */; };
 		947C033D1CCBFEB2000E3172 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 947C02771CCBFEB2000E3172 /* b2CollideCircle.cpp */; };
@@ -369,6 +372,13 @@
 		942ABB0A1CCF09EC00B18D0E /* ObjectTweenDrawable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectTweenDrawable.m; sourceTree = "<group>"; };
 		942ABB121CCF914900B18D0E /* Bound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bound.h; sourceTree = "<group>"; };
 		942ABB131CCF914900B18D0E /* Bound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bound.m; sourceTree = "<group>"; };
+		942D6F751CD667D700000453 /* Box2DConv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DConv.h; sourceTree = "<group>"; };
+		942D6F771CD6FDED00000453 /* JetpackKnightGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackKnightGame.h; sourceTree = "<group>"; };
+		942D6F781CD6FDED00000453 /* JetpackKnightGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackKnightGame.m; sourceTree = "<group>"; };
+		942D6F7D1CD72C1100000453 /* JetpackKnightController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackKnightController.h; sourceTree = "<group>"; };
+		942D6F7E1CD72C1100000453 /* JetpackKnightController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackKnightController.m; sourceTree = "<group>"; };
+		942D6F801CD73F9600000453 /* JetpackKnightPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackKnightPlayer.h; sourceTree = "<group>"; };
+		942D6F811CD73F9600000453 /* JetpackKnightPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackKnightPlayer.m; sourceTree = "<group>"; };
 		9479C4F61CCBAF2A003B1FF7 /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
 		9479C4F71CCBAF2A003B1FF7 /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
 		947C02711CCBFEB2000E3172 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
@@ -659,6 +669,12 @@
 				942ABB011CCF09EC00B18D0E /* JetpackKnightGameData.m */,
 				942ABB021CCF09EC00B18D0E /* JetpackKnightViewController.h */,
 				942ABB031CCF09EC00B18D0E /* JetpackKnightViewController.m */,
+				942D6F771CD6FDED00000453 /* JetpackKnightGame.h */,
+				942D6F781CD6FDED00000453 /* JetpackKnightGame.m */,
+				942D6F7D1CD72C1100000453 /* JetpackKnightController.h */,
+				942D6F7E1CD72C1100000453 /* JetpackKnightController.m */,
+				942D6F801CD73F9600000453 /* JetpackKnightPlayer.h */,
+				942D6F811CD73F9600000453 /* JetpackKnightPlayer.m */,
 			);
 			path = JetpackKnight;
 			sourceTree = "<group>";
@@ -759,6 +775,7 @@
 		9479C4F51CCBAEF1003B1FF7 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				942D6F751CD667D700000453 /* Box2DConv.h */,
 				942A814E1CD034CB00672C0F /* Camera.h */,
 				942A814F1CD034CB00672C0F /* Camera.m */,
 				942ABB121CCF914900B18D0E /* Bound.h */,
@@ -777,12 +794,12 @@
 				942ABAF01CCF09E000B18D0E /* DynamicRTree.mm */,
 				942ABAF11CCF09E000B18D0E /* Game.h */,
 				942ABAF21CCF09E000B18D0E /* Game.m */,
+				942ABAF71CCF09E000B18D0E /* GameSimulator.h */,
+				942ABAF81CCF09E000B18D0E /* GameSimulator.mm */,
 				942ABAF31CCF09E000B18D0E /* GameData.h */,
 				942ABAF41CCF09E000B18D0E /* GameData.m */,
 				942ABAF51CCF09E000B18D0E /* GameDataGenerator.h */,
 				942ABAF61CCF09E000B18D0E /* GameDataGenerator.m */,
-				942ABAF71CCF09E000B18D0E /* GameSimulator.h */,
-				942ABAF81CCF09E000B18D0E /* GameSimulator.mm */,
 				942A81501CD034CB00672C0F /* GameView.h */,
 				942A81511CD034CB00672C0F /* GameView.m */,
 				9479C4F61CCBAF2A003B1FF7 /* GameViewController.h */,
@@ -1194,6 +1211,8 @@
 				942A81521CD034CB00672C0F /* Camera.m in Sources */,
 				947C039F1CCBFEB2000E3172 /* b2Rope.cpp in Sources */,
 				947C039C1CCBFEB2000E3172 /* b2RopeJoint.cpp in Sources */,
+				942D6F821CD73F9600000453 /* JetpackKnightPlayer.m in Sources */,
+				942D6F791CD6FDED00000453 /* JetpackKnightGame.m in Sources */,
 				942ABAFB1CCF09E000B18D0E /* Game.m in Sources */,
 				947C039A1CCBFEB2000E3172 /* b2PulleyJoint.cpp in Sources */,
 				947C039B1CCBFEB2000E3172 /* b2RevoluteJoint.cpp in Sources */,
@@ -1205,6 +1224,7 @@
 				947C034A1CCBFEB2000E3172 /* b2Math.cpp in Sources */,
 				947C039E1CCBFEB2000E3172 /* b2WheelJoint.cpp in Sources */,
 				947C03461CCBFEB2000E3172 /* b2EdgeShape.cpp in Sources */,
+				942D6F7F1CD72C1100000453 /* JetpackKnightController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1314,7 +1334,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/";
 				INFOPLIST_FILE = "Tapcraft 2/JetpackKnight-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpackknightgame.lite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "606c7f2e-ea73-4ca7-a900-5472f3ebfdfd";
@@ -1341,7 +1361,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/";
 				INFOPLIST_FILE = "Tapcraft 2/JetpackKnight-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpackknightgame.lite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "606c7f2e-ea73-4ca7-a900-5472f3ebfdfd";

@@ -4,18 +4,7 @@
 
 #import "DynamicRTree.h"
 #include <Box2D/Collision/b2DynamicTree.h>
-
-#define write_Bound_to_b2AABB(bound, aabb) {        \
-        (aabb).lowerBound.x = (bound).lowerBound.x; \
-        (aabb).lowerBound.y = (bound).lowerBound.y; \
-        (aabb).upperBound.x = (bound).upperBound.x; \
-        (aabb).upperBound.y = (bound).upperBound.y; \
-    }
-
-#define write_CGPoint_to_b2Vec2(point, vec) {   \
-        (point).x = (vec).x;                    \
-        (point).y = (vec).y;                    \
-    }
+#include "Box2DConv.h"
 
 class QueryCallbackClass
 {
