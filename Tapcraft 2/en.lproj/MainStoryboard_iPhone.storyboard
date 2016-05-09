@@ -273,16 +273,16 @@
                                             <action selector="shareScore" destination="2" eventType="touchUpInside" id="be3-hR-cH6"/>
                                         </connections>
                                     </button>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="hme-EX-i50">
+                                        <rect key="frame" x="-15" y="44" width="139" height="135"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <imageView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="pauseText.png" id="Chx-fE-Lbz">
                                 <rect key="frame" x="160" y="141" width="160" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="hme-EX-i50">
-                                <rect key="frame" x="83" y="134" width="139" height="135"/>
-                                <autoresizingMask key="autoresizingMask"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -330,9 +330,9 @@
                                 <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <size key="shadowOffset" width="-1" height="-1"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5qQ-qK-fCe" userLabel="DistanceLabel">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5qQ-qK-fCe" userLabel="DistanceLabel">
                                 <rect key="frame" x="285" y="15" width="181" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -354,25 +354,50 @@
                                 </state>
                             </button>
                             <view hidden="YES" contentMode="scaleToFill" id="07P-3B-9RH">
-                                <rect key="frame" x="98" y="90" width="284" height="160"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="320"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="abk-Ro-m4v">
-                                        <rect key="frame" x="115" y="73" width="54" height="67"/>
+                                    <view contentMode="scaleToFill" id="MFi-Ks-ZeI">
+                                        <rect key="frame" x="120" y="96" width="215" height="157"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="MenuButton.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="didTapMenuButton:" destination="mZ9-qz-skW" eventType="touchUpInside" id="Zzf-C2-vA7"/>
-                                        </connections>
-                                    </button>
-                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="GameOverBackground.png" id="voG-Zm-aba">
-                                        <rect key="frame" x="51" y="7" width="182" height="133"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
-                                    </imageView>
+                                        <subviews>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="GameOverBackground.png" id="voG-Zm-aba">
+                                                <rect key="frame" x="0.0" y="0.0" width="215" height="157"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            </imageView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="abk-Ro-m4v">
+                                                <rect key="frame" x="17" y="63" width="54" height="67"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" image="MenuButton.png">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didTapGameOverMenu:" destination="mZ9-qz-skW" eventType="touchUpInside" id="oxd-hI-cJy"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Lose/Win" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="klc-aE-g3N" userLabel="GameOverMessage">
+                                                <rect key="frame" x="17" y="118" width="181" height="31"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="highlightedColor"/>
+                                                <color key="shadowColor" red="1" green="0.99997437000274658" blue="0.99999129772186279" alpha="1" colorSpace="calibratedRGB"/>
+                                                <size key="shadowOffset" width="0.0" height="0.0"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Yqr-kV-i5g" userLabel="RestartGame">
+                                                <rect key="frame" x="130" y="63" width="68" height="67"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" image="AgainButton.png">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didTapGameOverRestartGame:" destination="mZ9-qz-skW" eventType="touchUpInside" id="kOd-XR-efM"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.1998114224137931" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -382,6 +407,8 @@
                     <connections>
                         <outlet property="distanceLabel" destination="5qQ-qK-fCe" id="1mG-2d-uJj"/>
                         <outlet property="gameOverMenuButton" destination="abk-Ro-m4v" id="yvE-Hu-5Ru"/>
+                        <outlet property="gameOverMessage" destination="klc-aE-g3N" id="JVR-Nl-R0R"/>
+                        <outlet property="gameOverRestartButton" destination="Yqr-kV-i5g" id="d4P-0t-ncC"/>
                         <outlet property="gameOverView" destination="07P-3B-9RH" id="01F-6d-cfj"/>
                         <outlet property="leftShootButton" destination="3Rb-Lm-1Ou" id="hyT-iE-39d"/>
                         <outlet property="rightShootButton" destination="hAD-2D-yC4" id="k0z-Ya-Sf5"/>

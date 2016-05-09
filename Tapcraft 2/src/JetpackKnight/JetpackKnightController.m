@@ -58,9 +58,7 @@ static void playerBeginContactWithObstacle(JetpackKnightController *ctr, SimCont
         player.rocketEngineOn = NO;
     } else {
         player.character.drawable = [player.character.explosionDrawable copy];
-        ctr.viewController.pauseSimulation = YES;
         [ctr.viewController gameDidEnd];
-        // present gameover
     }
 }
 
@@ -68,6 +66,9 @@ static void playerBeginContactWithDiamond(JetpackKnightController *ctr, SimConta
 {
     [ctr.postStepDestorySet addObject:otherObject];
     player.collectedGems++;
+    if(playerIndex == ctr.playerIndex) {
+        ctr.viewController.scoreLabel.text = [NSString stringWithFormat:@"%zd", player.collectedGems];
+    }
 }
 
 static void playerBeginContactWithRocket(JetpackKnightController *ctr, SimContact *contact, JetpackKnightPlayer *player, NSInteger playerIndex, GObject *otherObject)
@@ -113,8 +114,33 @@ static void playerBeginContactWithRocket(JetpackKnightController *ctr, SimContac
             character.drawable = [character.runningDrawable copy];
             [_playersById setObject:player forKey:player.playerId];
         }
+        
+        // follow character after step
+        JetpackKnightPlayer *player = [_viewController.jGame.players objectAtIndex:self.playerIndex];
+        Character *character = player.character;
+        [_viewController.game setCameraCenter:CGPointMake(character.position.x + _game.jGameData.characterPinOffset.x, _viewController.game.camera.center.y + _game.jGameData.characterPinOffset.y)];
+        _viewController.scoreLabel.text = [NSString stringWithFormat:@"%zd", player.collectedGems];
+        [self displayPlayersDistanceToOtherPlayer:player];
+        
     }
     return self;
+}
+
+- (void)displayPlayersDistanceToOtherPlayer:(JetpackKnightPlayer*)player
+{
+    JetpackKnightPlayer *otherPlayer = nil;
+    for(JetpackKnightPlayer *aPlayer in self.game.players) {
+        if(aPlayer != player) {
+            otherPlayer = aPlayer;
+            break;
+        }
+    }
+    if(otherPlayer == nil) {
+        self.viewController.distanceLabel.text = @"";
+    } else {
+        CGFloat distance = fabs(player.character.position.x - otherPlayer.character.position.x);
+        self.viewController.distanceLabel.text = [NSString stringWithFormat:@"Distance: %.1f", distance];
+    }
 }
 
 #pragma mark - GameViewTouchDelegate
@@ -346,6 +372,16 @@ static void playerBeginContactWithRocket(JetpackKnightController *ctr, SimContac
     JetpackKnightPlayer *player = [_viewController.jGame.players objectAtIndex:self.playerIndex];
     Character *character = player.character;
     [_viewController.game setCameraCenter:CGPointMake(character.position.x + _game.jGameData.characterPinOffset.x, _viewController.game.camera.center.y + _game.jGameData.characterPinOffset.y)];
+    if(self.game.players.count > 1)
+        [self displayPlayersDistanceToOtherPlayer:player];
+    
+    // check for end game
+    for(JetpackKnightPlayer *player in self.viewController.jGame.players) {
+        Character *character = player.character;
+        if(character.position.x >= self.game.gameData.gameBound.upperBound.x) {
+            [self.viewController gameDidEnd];
+        }
+    }
 }
 
 

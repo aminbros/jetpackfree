@@ -318,7 +318,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
               @"fps": @15,
               @"loop": @0,
               @"nameFormat": @"fire%@.png",
-              @"framesNameArg1": @[@"0",@"1",@"2",@"3",@"4",@"5",@"6",@"7"],
+              @"framesNameArg1": @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"0"],
               @"origin": @"bottom"
           },
           ];

@@ -26,7 +26,8 @@
     // replace view for game dev
 #ifdef GAME_DEV
     if(YES) {
-        [_window setRootViewController:[[JetpackKnightViewController alloc] init]];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+        [_window setRootViewController:[storyboard instantiateViewControllerWithIdentifier:@"JetpackKnightViewController"]];
         return NO;
     }
 #endif

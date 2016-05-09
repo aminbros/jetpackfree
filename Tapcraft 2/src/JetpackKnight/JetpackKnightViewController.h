@@ -31,6 +31,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UIView *gameOverView;
 @property (weak, nonatomic) IBOutlet UIButton *gameOverMenuButton;
+@property (weak, nonatomic) IBOutlet UIButton *gameOverRestartButton;
+@property (weak, nonatomic) IBOutlet UILabel *gameOverMessage;
 
 @property NSInteger lastSentCommitTimeStep;
 
