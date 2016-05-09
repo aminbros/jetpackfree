@@ -18,10 +18,17 @@
 @property SEL gameLoopSelector;
 @property BOOL pauseSimulation;
 
+@property NSTimeInterval gameLoopTimeInterval;
+@property NSTimer *gameLoopTimer;
+
+@property BOOL gameDestroyed;
+
 - (void)destroyGame;
 - (void)initializeGame;
 - (void)startGame;
 
-- (void)gameLoop:(CADisplayLink*)displayLink;
+
+- (NSTimeInterval)frameUpdateIntervalWithInterval:(CFTimeInterval)timeInterval;
+- (void)gameLoop;
 
 @end

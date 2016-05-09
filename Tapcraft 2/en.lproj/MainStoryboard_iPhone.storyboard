@@ -375,7 +375,7 @@
                                                     <action selector="didTapGameOverMenu:" destination="mZ9-qz-skW" eventType="touchUpInside" id="oxd-hI-cJy"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Lose/Win" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="klc-aE-g3N" userLabel="GameOverMessage">
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Lose/Win" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="klc-aE-g3N" userLabel="GameOverMessage">
                                                 <rect key="frame" x="17" y="118" width="181" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>

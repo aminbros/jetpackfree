@@ -119,11 +119,15 @@ static void playerBeginContactWithRocket(JetpackKnightController *ctr, SimContac
         JetpackKnightPlayer *player = [_viewController.jGame.players objectAtIndex:self.playerIndex];
         Character *character = player.character;
         [_viewController.game setCameraCenter:CGPointMake(character.position.x + _game.jGameData.characterPinOffset.x, _viewController.game.camera.center.y + _game.jGameData.characterPinOffset.y)];
-        _viewController.scoreLabel.text = [NSString stringWithFormat:@"%zd", player.collectedGems];
-        [self displayPlayersDistanceToOtherPlayer:player];
         
     }
     return self;
+}
+
+- (void)displayPlayerStatus {
+    JetpackKnightPlayer *player = [_viewController.jGame.players objectAtIndex:self.playerIndex];
+    _viewController.scoreLabel.text = [NSString stringWithFormat:@"%zd", player.collectedGems];
+    [self displayPlayersDistanceToOtherPlayer:player];
 }
 
 - (void)displayPlayersDistanceToOtherPlayer:(JetpackKnightPlayer*)player

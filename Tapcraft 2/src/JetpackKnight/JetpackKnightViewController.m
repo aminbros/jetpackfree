@@ -45,6 +45,8 @@
 
 @property BOOL gameFinished;
 
+@property NSInteger frameTimeSteps;
+
 @end
 
 @implementation JetpackKnightViewController
@@ -63,7 +65,7 @@
     if(self.match == nil) {// single player
         [self startLoadingGame];
     } else {
-        self.gameLoopSelector = @selector(networkGameLoop:);
+        self.gameLoopSelector = @selector(networkGameLoop);
         self.scoreLabel.text = @"Connecting...";
         self.match.delegate = self;
         _localPlayer = [GKLocalPlayer localPlayer];
@@ -79,6 +81,10 @@
 
 - (void)dealloc {
     [self.match disconnect];
+}
+
+- (void)destroyCurrentGame {
+    [super destroyGame];
 }
 
 - (void)destroyGame {
@@ -180,7 +186,7 @@
             if([player.playerID isEqual:_gameInitiatorPlayer.playerID]) {
                 uint32_t from = [GameNetworkProtocol readUInt32FromData:packet.data offset:0 endsAt:nil];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self viewGameInitialStateAndStartCountDownFrom:from];
+                    [self startCountDown:from];
                 });
             }
             break;
@@ -215,7 +221,13 @@
             uint32_t timeStep = [GameNetworkProtocol readUInt32FromData:packet.data offset:0 endsAt:nil];
             NSMutableDictionary *playerData = [_playersDataById objectForKey:player.playerID];
             [playerData setObject:[NSNumber numberWithInteger:(NSInteger)timeStep] forKey:@"last_commit"];
+            NSInteger pleastCommit = _leastCommitTimeStep;
             [self updateLeastCommitTimeStep];
+            if(pleastCommit != _leastCommitTimeStep) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self networkGameLoop];
+                });
+            }
             break;
         }
         default:
@@ -328,7 +340,7 @@
     if(readyCount == _playersId.count) {
         uint32_t countDownStartsFrom = 3;
         [self sendDataToAll:[GameNetworkProtocol makePacketWithMessage:GN_GI_START_GAME_COUNT_DOWN uint32Data:countDownStartsFrom]];
-        [self viewGameInitialStateAndStartCountDownFrom:countDownStartsFrom];
+        [self startCountDown:countDownStartsFrom];
     }
 }
 
@@ -401,46 +413,52 @@
         }
 
         _leastCommitTimeStep = 0;
-        _lastTimeStep = -1;
+        _lastTimeStep = 0;
         // lockstep impl
         _sendCommitInterval = self.game.gameSimulator.timeStep;
         _lastSendCommitTime = 0;
-        _lastSentCommitTimeStep = -1;
+        _lastSentCommitTimeStep = 0;
         _commitTimeoutInterval = 10;
     }
     [super startGame];
 }
 
-- (void)networkGameLoop:(CADisplayLink *)displayLink {
-    // lock step impl
-    if(!_gameFinished) {
-        NSTimeInterval time = -[self.game.startDate timeIntervalSinceNow];
-        NSTimeInterval timeDiff = time - _lastSendCommitTime;
-        NSInteger commitTimeStep = self.game.gameSimulator.simulationStep;
-        if(timeDiff > _sendCommitInterval && commitTimeStep > _lastSentCommitTimeStep) {
-            // commit action until next step
-            [self sendDataToAll:[GameNetworkProtocol makePacketWithMessage:GN_COMMIT uint32Data:(uint32_t)commitTimeStep]];
-            
-            NSMutableDictionary *playerData = [_playersDataById objectForKey:_localPlayer.playerID];
-            [playerData setObject:[NSNumber numberWithInteger:commitTimeStep] forKey:@"last_commit"];
-            [self updateLeastCommitTimeStep];
-            
-            _lastSentCommitTimeStep = commitTimeStep;
-            _lastSendCommitTime = time;
-        } else if(timeDiff > _commitTimeoutInterval) {
-            [self networkTimeout];
-        }
-    }
-    
-    NSInteger nextStep = _leastCommitTimeStep;
+- (void)networkGameLoop {
+    if(self.gameFinished || self.pauseSimulation)
+        return;
+    NSInteger nextStep = _leastCommitTimeStep + 1;
     if(nextStep > _lastTimeStep) {
         NSTimeInterval interval = self.game.gameSimulator.timeStep * (nextStep - _lastTimeStep);
-        if(!self.pauseSimulation) {
-            [self.game updateWithInterval:interval];
-        }
-        self.gameView.currentInterval = interval;
-        [self.gameView setNeedsDisplay];
+        [self.game updateWithInterval:interval];
         _lastTimeStep = nextStep;
+        _frameTimeSteps++;
+    }
+    // lock step impl
+    NSTimeInterval time = -[self.game.startDate timeIntervalSinceNow];
+    NSTimeInterval timeDiff = time - _lastSendCommitTime;
+    NSInteger commitTimeStep = self.game.gameSimulator.simulationStep;
+    if(timeDiff > _sendCommitInterval && commitTimeStep > _lastSentCommitTimeStep) {
+        // commit action until next step
+        [self sendDataToAll:[GameNetworkProtocol makePacketWithMessage:GN_COMMIT uint32Data:(uint32_t)commitTimeStep]];
+        
+        NSMutableDictionary *playerData = [_playersDataById objectForKey:_localPlayer.playerID];
+        [playerData setObject:[NSNumber numberWithInteger:commitTimeStep] forKey:@"last_commit"];
+        [self updateLeastCommitTimeStep];
+        
+        _lastSentCommitTimeStep = commitTimeStep;
+        _lastSendCommitTime = time;
+    } else if(timeDiff > _commitTimeoutInterval) {
+        [self networkTimeout];
+    }
+}
+
+- (NSTimeInterval)frameUpdateIntervalWithInterval:(CFTimeInterval)interval {
+    if(self.match != nil && !self.pauseSimulation) {
+        NSTimeInterval interval = _frameTimeSteps * self.game.gameSimulator.timeStep;
+        _frameTimeSteps = 0;
+        return interval;
+    } else {
+        return [super frameUpdateIntervalWithInterval:interval];
     }
 }
 
@@ -455,11 +473,6 @@
         [preLabel removeFromSuperview];
         preLabel = [self.view viewWithTag:COUNT_DOWN_LABEL_COUNTING_TAG];
     }
-}
-
-- (void)viewGameInitialStateAndStartCountDownFrom:(NSInteger)from {
-    
-    [self startCountDown:from];
 }
 
 - (void)startCountDown:(NSInteger)from {
@@ -527,8 +540,8 @@
 - (void)startLoadingGame {
     
     // remove previous game
-    [self.displayLink invalidate];
-    self.game = nil; // remove game
+    if(!self.gameDestroyed)
+        [self destroyCurrentGame];
     
     _gameFinished = NO;
     [self toggleGameOverView:NO];
@@ -570,10 +583,13 @@
         self.jGameData.players = [players copy];
         
         [self initializeGame];
+        self.gameController = [[JetpackKnightController alloc] initWithViewController:self];
+        self.gameController.playerIndex = playerIndex;
+
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self.gameView setNeedsDisplay];
             self.scoreLabel.text = @"";
-            self.gameController = [[JetpackKnightController alloc] initWithViewController:self];
-            self.gameController.playerIndex = playerIndex;
+            [self.gameController displayPlayerStatus];
             [self didLoadGame];
         });
     });
@@ -583,7 +599,7 @@
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     if(self.match == nil) { // single player
-        [self viewGameInitialStateAndStartCountDownFrom:3];
+        [self startCountDown:3];
     } else {
         if(!_isGameInitiator) {
             [self sendData:[GameNetworkProtocol makePacketWithMessage:GN_READY_TO_START data:nil] toPlayer:_gameInitiatorPlayer];
@@ -620,10 +636,9 @@
 }
 
 - (void)gameDidEnd {
-    [self.displayLink invalidate];
+    self.gameOverMessage.text = [self gameOverMessageForGame:self.jGame];
     self.pauseSimulation = YES;
     _gameFinished = YES;
-    self.gameOverMessage.text = [self gameOverMessageForGame:self.jGame];
     [self toggleGameOverView:YES];
 }
 
@@ -634,7 +649,8 @@
             if(_playersId.count != _match.players.count + 1) {
                 [self networkErrorWithMessage:@"Players are not connected!"];
             }
-            [self.displayLink invalidate];
+            if(!self.gameDestroyed)
+                [self destroyCurrentGame];
             _gameFinished = NO;
             for(NSString *playerId in _playersDataById) {
                 NSMutableDictionary *playerData = [_playersDataById objectForKey:playerId];
@@ -656,14 +672,24 @@
 }
 
 - (NSString*)gameOverMessageForGame:(JetpackKnightGame*)game {
-    JetpackKnightPlayer *winner;
+    JetpackKnightPlayer *winner = nil;
     for(JetpackKnightPlayer *player in game.players) {
         if(winner == nil || player.collectedGems > winner.collectedGems) {
             winner = player;
         }
     }
+    BOOL isWinner = NO;
+    for(JetpackKnightPlayer *player in game.players) {
+        if(player.collectedGems != winner.collectedGems) {
+            isWinner = YES;
+            break;
+        }
+    }
     if(self.match != nil) {
-        return [NSString stringWithFormat:@"%@ won, Gems: %zd", [winner isKindOfClass:[GKLocalPlayer class]] ? @"You" : winner.gkPlayer.displayName, winner.collectedGems];
+        if(!isWinner) {
+            return @"";
+        }
+        return [NSString stringWithFormat:@"%@ won, Gems: %zd", ([winner.gkPlayer isKindOfClass:[GKLocalPlayer class]] ? @"You" : winner.gkPlayer.displayName), winner.collectedGems];
     } else {
         return [NSString stringWithFormat:@"Collected gems: %zd", winner.collectedGems];
     }

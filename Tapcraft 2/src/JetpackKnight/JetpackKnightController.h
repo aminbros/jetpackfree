@@ -37,6 +37,7 @@
 - (instancetype)initWithViewController:(JetpackKnightViewController*)viewController;
 
 - (void)didReceivedActionMsg:(GNActionMsg*)actionMsg fromRemotePlayer:(GKPlayer*)gkPlayer;
+- (void)displayPlayerStatus;
 
 @property (weak)JetpackKnightViewController *viewController;
 @property NSInteger playerIndex;
