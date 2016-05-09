@@ -18,4 +18,6 @@
 - (IBAction)openFacebook;
 - (IBAction)gopro;
 
+@property (weak, nonatomic) IBOutlet UIButton *matchMakerButton;
+
 @end

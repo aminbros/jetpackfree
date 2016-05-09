@@ -5,6 +5,7 @@
 #import "GameData.h"
 #import "GameDataGenerator.h"
 #import "ObjectImageDrawable.h"
+#import "Character.h"
 
 extern NSString * const JetpackKnightDiamondTag;
 extern NSString * const JetpackKnightRocketTag;
@@ -26,9 +27,14 @@ extern NSString * const JetpackKnightGroundTag;
 @property NSString *groundTag;
 @property ObjectImageDrawable *groundDrawable;
 
+@property CGPoint characterPinOffset;
 @property NSArray *players;
 
-+ (GameDataGeneratorConfig*)createGeneratorConfigWithGameData:(JetpackKnightGameData*)gd landStart:(CGFloat)landStart landEnd:(CGFloat)landEnd;
++ (GameDataGeneratorConfig*)createGeneratorConfigWithGameData:(JetpackKnightGameData*)gd;
 + (JetpackKnightGameData*)createInitialGameData;
+
++ (CGFloat)initialSpacing;
+
+- (void)setCharacter:(Character*)character atPositionIndex:(NSInteger)index;
 
 @end

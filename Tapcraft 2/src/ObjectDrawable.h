@@ -5,12 +5,12 @@
 #import <UIKit/UIKit.h>
 #import "Camera.h"
 
-@class Object;
+@class GObject;
 
 @protocol ObjectDrawable <NSObject>
 
 - (void)drawOnContext:(CGContextRef)context
-               object:(Object*)object
+               object:(GObject*)object
            cameraHalfSize:(CGSize*)cameraHalfSize
            cameraCenter:(CGPoint*)cameraCenter
             cameraFOV:(CGFloat)cameraFOV

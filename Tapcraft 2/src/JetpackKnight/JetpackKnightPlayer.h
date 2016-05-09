@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Character.h"
+#import <GameKit/GameKit.h>
 
 @interface JetpackKnightPlayer : NSObject
 
@@ -22,5 +23,8 @@
 @property NSInteger collectedGems;
 @property CGFloat jumpForce;
 @property NSTimeInterval jumpForceTime;
+
+@property NSString *playerId;
+@property GKPlayer *gkPlayer;
 
 @end

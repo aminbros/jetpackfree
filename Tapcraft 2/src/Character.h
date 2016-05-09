@@ -6,7 +6,7 @@
 #import "ObjectImageDrawable.h"
 #import "ObjectTweenDrawable.h"
 
-@interface Character : Object
+@interface Character : GObject
 
 @property ObjectImageDrawable *standDrawable;
 @property ObjectTweenDrawable *runningDrawable;

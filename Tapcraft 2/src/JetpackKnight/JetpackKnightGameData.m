@@ -7,7 +7,7 @@
 #import "GameDataGenerator.h"
 #import "GameSimulator.h"
 
-#define GAME_SCALAR 10.0
+#define GAME_SCALAR 5.0
 #define RASTER_SCALE (1/320.0*GAME_SCALAR)
 
 NSString * const JetpackKnightDiamondTag = @"diamond";
@@ -18,11 +18,13 @@ NSString * const JetpackKnightGroundTag = @"ground";
 
 @implementation JetpackKnightGameData
 
-+ (GameDataGeneratorConfig*)createGeneratorConfigWithGameData:(JetpackKnightGameData*)gd landStart:(CGFloat)landStart landEnd:(CGFloat)landEnd
++ (CGFloat)initialSpacing {
+    return 2 * GAME_SCALAR;
+}
+
++ (GameDataGeneratorConfig*)createGeneratorConfigWithGameData:(JetpackKnightGameData*)gd
 {
     GameDataGeneratorConfig *c = [[GameDataGeneratorConfig alloc] init];
-    c.landStart = landStart;
-    c.landEnd = landEnd;
 
     CGFloat freeArea = gd.gameBound.upperBound.y - gd.groundY;
     // diamonds
@@ -60,7 +62,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
                            positionYVariant:0
                                scaleVaraint:0.0];
     goi.every = 10 * GAME_SCALAR;
-    goi.amount = 4 * 0;
+    goi.amount = 4;
     goi.protectOverlap = YES;
     goi.pickTemplateRandom = YES;
     c.genObstacleInfo = goi;
@@ -74,7 +76,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
                            positionYVariant:0
                                scaleVaraint:0];
     maxWidth = 1;
-    for(Object *object in gd.treesObjectTemplate) {
+    for(GObject *object in gd.treesObjectTemplate) {
         if(object.size.width > maxWidth)
             maxWidth = object.size.width;
     }
@@ -90,7 +92,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
                            positionYVariant:0
                                scaleVaraint:0];
     maxWidth = 1;
-    for(Object *object in gd.buildingsObjectTemplate) {
+    for(GObject *object in gd.buildingsObjectTemplate) {
         if(object.size.width > maxWidth)
             maxWidth = object.size.width;
     }
@@ -154,11 +156,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
     gd.objects = [NSArray new];
     gd.characters = [characters copy];
     
-    NSInteger i = 0;
-    for(Character *character in gd.characters) {
-        character.position = CGPointMake((i * character.size.width + .2) * GAME_SCALAR, gd.groundY);
-        i++;
-    }
+    gd.characterPinOffset = CGPointMake(0.4 * GAME_SCALAR, 0);
 
     // decrease drawn objects for testing
     // gd.positionZs = @[@1,@1.7,@3,@10];
@@ -173,8 +171,12 @@ NSString * const JetpackKnightGroundTag = @"ground";
     return gd;
 }
 
+- (void)setCharacter:(Character*)character atPositionIndex:(NSInteger)index {
+    character.position = CGPointMake(index * (character.size.width + .1 * GAME_SCALAR), self.groundY + 0.01);
+}
+
 + (NSArray*)mkTreesTemplate:(JetpackKnightGameData*)gd {   
-    Object *o = [[Object alloc] init];
+    GObject *o = [[GObject alloc] init];
     o.position = CGPointMake(0, gd.groundY);
     [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"land1.png"] origin:@"bottom"];
     o.zIndex = -2;
@@ -186,7 +188,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
 }
 
 + (NSArray*)mkBuildingsTemplate:(JetpackKnightGameData*)gd {   
-    Object *o = [[Object alloc] init];
+    GObject *o = [[GObject alloc] init];
     o.position = CGPointMake(0, gd.groundY);
     [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"mountain.png"] origin:@"bottom"];
     o.zIndex = -3;
@@ -199,7 +201,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
 
 + (NSArray*)mkCloudsTemplate:(JetpackKnightGameData*)gd {
     
-    Object *o = [[Object alloc] init];
+    GObject *o = [[GObject alloc] init];
     o.position = CGPointMake(0, 0.8);
     [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"cloud.png"] origin:@"center"];
     o.zIndex = -4;
@@ -211,8 +213,9 @@ NSString * const JetpackKnightGroundTag = @"ground";
 }
 
 + (NSArray*)mkDiamondsTemplate:(JetpackKnightGameData*)gd {
-    Object *o = [[Object alloc] init];
-    [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"diamond.png"] origin:@"center"];
+    GObject *o = [[GObject alloc] init];
+    [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"diamond.png"] size:CGSizeMake(0.08 * GAME_SCALAR, 0.08 * GAME_SCALAR) origin:@"center"];
+    o.scale = CGPointMake(0.8, 0.8);
     o.zIndex = 1;
     o.bodyType = BodyTypeStatic;
     o.physicsActive = YES;
@@ -223,8 +226,9 @@ NSString * const JetpackKnightGroundTag = @"ground";
 
 
 + (NSArray*)mkRocketsTemplate:(JetpackKnightGameData*)gd {
-    Object *o = [[Object alloc] init];
-    [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"rocket.png"] origin:@"center"];
+    GObject *o = [[GObject alloc] init];
+    [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"rocket.png"] size:CGSizeMake(0.1 * GAME_SCALAR, 0.1 * GAME_SCALAR) origin:@"center"];
+    o.scale = CGPointMake(0.7, 0.7);
     o.zIndex = 1;
     o.bodyType = BodyTypeStatic;
     o.physicsActive = YES;
@@ -236,9 +240,10 @@ NSString * const JetpackKnightGroundTag = @"ground";
 + (NSArray*)mkObstaclesTemplate:(JetpackKnightGameData*)gd {
     NSMutableArray *ret = [NSMutableArray new];
     for(NSInteger i = 1; i <= 2; ++i) { 
-        Object *o = [[Object alloc] init];
+        GObject *o = [[GObject alloc] init];
         o.position = CGPointMake(0, gd.groundY);
-        [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:[NSString stringWithFormat:@"block%zd.png", i]] origin:@"bottom"];
+        [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:[NSString stringWithFormat:@"block%zd.png", i]] size:CGSizeMake(0.18 * GAME_SCALAR, 0.18 * GAME_SCALAR) origin:@"bottom"];
+        o.scale = CGPointMake(0.8, 0.8);
         o.zIndex = 1;
         o.bodyType = BodyTypeStatic;
         o.physicsActive = YES;
@@ -253,12 +258,17 @@ NSString * const JetpackKnightGroundTag = @"ground";
 {
     Character *c = [[Character alloc] init];
     
+    c.collisionCategoryBits = 0x0002;
+    c.collisionMaskBits = 0xFFFD;
+    
     c.standDrawable = [self objectImageDrawableWithName:@"character1.png"];
     // initialize character size and origin according to "character1.png"
     [self defineObjectDimeAndDrawable:c withObjectImageDrawable:c.standDrawable origin:@"bottom"];
     // character images have extra width
-    c.size = CGSizeMake(0.13 * GAME_SCALAR, c.size.width);
-    c.origin = CGPointMake(c.size.width / 2.0, c.size.width / 2.0);
+    c.size = CGSizeMake(0.13 * GAME_SCALAR, c.size.height);
+    c.scale = CGPointMake(1.2, 1.2);
+    c.origin = CGPointMake(c.size.width / 2.0, 0.0);
+    c.renderOutline = YES;
     c.zIndex = 2;
     c.bodyType = BodyTypeDynamic;
     c.density = 1.0;
@@ -267,18 +277,18 @@ NSString * const JetpackKnightGroundTag = @"ground";
     CGFloat hwDiff = (c.standDrawable.imageRect.size.width - c.size.width) / 2.0;
     
     // character data
-    c.jumpForce = 200.0;
+    c.jumpForce = 40.0;
     c.jumpForceTime = 0.1;
-    c.jumpOnAirForce = 200.0;
+    c.jumpOnAirForce = 40.0;
     c.jumpOnAirForceTime = 0.1;
     c.numberOfAllowedJumpsOnAir = 1;
     
     c.runningMaxForce = 20.0;
-    c.runningMaxVelocity = 7.0;
+    c.runningMaxVelocity = 4;
     
-    c.rocketMaxForce = CGPointMake(30.0, 50.0);
-    c.rocketMaxVelocity = CGPointMake(13.0, 2.0);
-    c.rocketFirstJumpForce = 200.0;
+    c.rocketMaxForce = CGPointMake(10.0, 40);
+    c.rocketMaxVelocity = CGPointMake(7, 4);
+    c.rocketFirstJumpForce = 40;
     c.rocketFirstJumpForceTime = 0.1;
     
     ObjectImageDrawable *oid = c.standDrawable;
@@ -362,7 +372,16 @@ NSString * const JetpackKnightGroundTag = @"ground";
     return otd;
 }
 
-+ (void)defineObjectDimeAndDrawable:(Object*)object withObjectImageDrawable:(ObjectImageDrawable*)oid origin:(NSString*)origin
++ (void)defineObjectDimeAndDrawable:(GObject*)object withObjectImageDrawable:(ObjectImageDrawable*)oid size:(CGSize)size origin:(NSString*)origin
+{
+    [self defineObjectDimeAndDrawable:object withObjectImageDrawable:oid origin:origin];
+    object.size = size;
+    CGFloat hwDiff = (oid.imageRect.size.width - object.size.width) / 2.0;
+    CGFloat hhDiff = (oid.imageRect.size.height - object.size.height) / 2.0;
+    oid.imageRect = CGRectMake(oid.imageRect.origin.x - hwDiff, oid.imageRect.origin.y - hhDiff, oid.imageRect.size.width, oid.imageRect.size.height);
+}
+
++ (void)defineObjectDimeAndDrawable:(GObject*)object withObjectImageDrawable:(ObjectImageDrawable*)oid origin:(NSString*)origin
 {
     object.size = oid.imageRect.size;
     object.drawable = oid;
@@ -381,9 +400,9 @@ NSString * const JetpackKnightGroundTag = @"ground";
                              scaleVaraint:(CGFloat)scaleVariant
 {
     NSMutableArray *ret = [NSMutableArray new];
-    for(Object *object in objects) {
+    for(GObject *object in objects) {
         ObjectTemplateInfo *ti = [[ObjectTemplateInfo alloc] init];
-        Object *objectCpy = [object copy];
+        GObject *objectCpy = [object copy];
         objectCpy.position = position;
         ti.object = objectCpy;
         ti.positionYVariant = positionYVariant;
@@ -398,7 +417,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
                              scaleVaraint:(CGFloat)scaleVariant
 {
     NSMutableArray *ret = [NSMutableArray new];
-    for(Object *object in objects) {
+    for(GObject *object in objects) {
         ObjectTemplateInfo *ti = [[ObjectTemplateInfo alloc] init];
         ti.object = object;
         ti.positionYVariant = positionYVariant;
@@ -421,6 +440,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
     gd.groundSize = _groundSize;
     gd.groundDrawable = [_groundDrawable copy];
     gd.players = _players;
+    gd.characterPinOffset = _characterPinOffset;
     return gd;
 }
 

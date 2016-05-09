@@ -6,7 +6,7 @@
 
 @interface ObjectTemplateInfo : NSObject
 
-@property Object *object;
+@property GObject *object;
 @property CGFloat positionYVariant;
 @property CGFloat scaleVariant;
 
@@ -25,6 +25,9 @@
 @end
 
 @interface GameDataGeneratorConfig : NSObject
+
+@property CGFloat groundStart;
+@property CGFloat groundEnd;
 
 @property CGFloat landStart;
 @property CGFloat landEnd;

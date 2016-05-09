@@ -244,21 +244,23 @@ public:
     _world->DestroyBody(body.body);
 }
 
-- (SimBody*)addObject:(Object*)object
+- (SimBody*)addObject:(GObject*)object
 {
     // body
     b2BodyDef bodyDef;
     b2FixtureDef fixtureDef;
-    b2PolygonShape box;
     b2Body *body;
+    b2Shape *shape = [self newShapeForObject:object];
     bodyDef.userData = (__bridge void *)object;
-    [self setObjectDynamicData:object bodyDef:&bodyDef fixtureDef:&fixtureDef polygonShape:&box];
+    [self setObjectDynamicData:object bodyDef:&bodyDef fixtureDef:&fixtureDef];
+    fixtureDef.shape = shape;
     body = _world->CreateBody(&bodyDef);
     body->CreateFixture(&fixtureDef);
+    delete shape;
     return [SimBody bodyWithB2:body];
 }
 
-- (void)setObjectDynamicData:(Object*)object bodyDef:(b2BodyDef*)bodyDef fixtureDef:(b2FixtureDef*)fixtureDef polygonShape:(b2PolygonShape*)polygonShape
+- (void)setObjectDynamicData:(GObject*)object bodyDef:(b2BodyDef*)bodyDef fixtureDef:(b2FixtureDef*)fixtureDef
 {
     bodyDef->fixedRotation = object.bodyFixedRotation;
     bodyDef->type = (b2BodyType)object.bodyType;
@@ -267,21 +269,45 @@ public:
     write_CGPoint_to_b2Vec2(object.position, bodyDef->position);
     bodyDef->angle = (float32)object.angle;
     
-    [self setShape:polygonShape object:object];
-
-    fixtureDef->shape = polygonShape;
     fixtureDef->density = object.density;
     fixtureDef->friction = object.friction;
     fixtureDef->isSensor = object.isSensor;
+    b2Filter filter;
+    filter.categoryBits = object.collisionCategoryBits;
+    filter.maskBits = object.collisionMaskBits;
+    filter.groupIndex = object.collisionGroupIndex;
+    fixtureDef->filter = filter;
 }
 
-- (void)setShape:(b2PolygonShape*)polygonShape object:(Object*)object
+- (b2Shape*)newShapeForObject:(GObject*)object
 {
     // set box
-    CGFloat hw = object.size.width / 2.0 * object.scale.x;
-    CGFloat hh = object.size.height / 2.0 * object.scale.y;
-    b2Vec2 vec2 = b2Vec2(hw - object.origin.x, hh - object.origin.y);
-    polygonShape->SetAsBox(hw, hh, vec2, 0.0);
+    switch (object.shapeType) {
+        case GObjectShapeTypeBox: {
+            b2PolygonShape *polygonShape = new b2PolygonShape;
+            CGFloat hw = object.size.width / 2.0 * object.scale.x;
+            CGFloat hh = object.size.height / 2.0 * object.scale.y;
+            b2Vec2 center = b2Vec2(hw - object.origin.x, hh - object.origin.y);
+            polygonShape->SetAsBox(hw, hh, center, 0.0);
+            return polygonShape;
+        }
+        case GObjectShapeTypeTopEdge: {
+            b2Vec2 v1(-object.origin.x, object.size.height - object.origin.y);
+            b2Vec2 v2(v1.x + object.size.width * object.scale.x, v1.y);
+            b2Vec2 v0(v1.x - object.size.width * object.scale.x, v1.y);
+            b2Vec2 v3(v2.x + object.size.width * object.scale.x, v2.y);
+            b2EdgeShape *shape = new b2EdgeShape;
+            shape->Set(v1, v2);
+            shape->m_vertex0 = v0;
+            shape->m_vertex3 = v3;
+            shape->m_hasVertex0 = true;
+            shape->m_hasVertex3 = true;
+            return shape;
+        }
+        default:
+            NSAssert(NO, @"Unknown shapeType %zd", object.shapeType);
+    }
+    return NULL;
 }
 
 - (void)step
@@ -298,7 +324,7 @@ public:
     _world->QueryAABB(&queryCallback, aabb);
 }
 
-- (void)updateObject:(Object*)object withBody:(SimBody*)bdy
+- (void)updateObject:(GObject*)object withBody:(SimBody*)bdy
 {
     b2Body *body = bdy.body;
     b2Vec2 vec2 = body->GetPosition();

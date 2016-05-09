@@ -4,7 +4,9 @@
 
 #import "Object.h"
 
-@implementation Object
+#define AVG_SCALE(s) (((s).x + (s).y) / 2.0)
+
+@implementation GObject
 
 - (instancetype)init {
     self = [super init];
@@ -16,13 +18,19 @@
 #ifdef DEBUG
         _renderOutlineColor = [UIColor redColor];
 #endif
+        
+        _collisionCategoryBits = 0x0001;
+        _collisionMaskBits = 0xFFFF;
+        _collisionGroupIndex = 0;
+        
+        _shapeType = GObjectShapeTypeBox;
     }
     return self;
 }
 
 -(id)copyWithZone:(NSZone *)zone
 {
-    Object *copyObj = [[[self class] alloc] init];
+    GObject *copyObj = [[[self class] alloc] init];
     copyObj.position = _position;
     copyObj.origin = _origin;
     copyObj.size = _size;
@@ -38,6 +46,12 @@
     copyObj.angle = _angle;
     copyObj.bodyFixedRotation = _bodyFixedRotation;
     copyObj.isSensor = _isSensor;
+    copyObj.renderOutline = _renderOutline;
+    copyObj.renderOutlineColor  = _renderOutlineColor;
+    copyObj.collisionGroupIndex = _collisionGroupIndex;
+    copyObj.collisionMaskBits = _collisionMaskBits;
+    copyObj.collisionCategoryBits = _collisionCategoryBits;
+    copyObj.shapeType = _shapeType;
     return copyObj;
 }
 
@@ -59,11 +73,11 @@
                        (_size.height - _origin.y) * _scale.y); // top
 }
 
-- (NSComparisonResult)zIndexCompare:(Object*)other {
+- (NSComparisonResult)zIndexCompare:(GObject*)other {
     return _zIndex < other.zIndex ? NSOrderedAscending : NSOrderedDescending;
 }
 
-- (NSComparisonResult)zIndexCompareRev:(Object*)other {
+- (NSComparisonResult)zIndexCompareRev:(GObject*)other {
     return _zIndex > other.zIndex ? NSOrderedAscending : NSOrderedDescending;
 }
 
@@ -73,6 +87,15 @@
 
 -(NSUInteger)hash {
     return (NSUInteger)self;
+}
+
+- (CGFloat)scalarMulAvgScale:(CGFloat)scalar {
+    return scalar * AVG_SCALE(self.scale);
+}
+
+- (CGPoint)pointMulAvgScale:(CGPoint*)point {
+    CGFloat avgs = AVG_SCALE(self.scale);
+    return CGPointMul(*point, avgs);
 }
 
 @end

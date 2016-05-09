@@ -7,9 +7,11 @@
 //
 
 #import "MenuViewController.h"
+#import "JetpackKnightViewController.h"
+#import "AppDelegate.h"
 AVAudioPlayer  *MainAudio;
 
-@interface MenuViewController ()
+@interface MenuViewController ()<GKMatchmakerViewControllerDelegate,JetpackKnightViewControllerDelegate>
 
 @end
 bool firstOne = YES;
@@ -140,5 +142,37 @@ bool firstOne = YES;
     
 }
 
+- (IBAction)didTapMakeMatch:(id)sender {
+    GKMatchRequest *matchRequest = [[GKMatchRequest alloc] init];
+    matchRequest.minPlayers = 2;
+    matchRequest.maxPlayers = 2;
+    GKMatchmakerViewController *vc = [[GKMatchmakerViewController alloc] initWithMatchRequest:matchRequest];
+    vc.matchmakerDelegate = self;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+#pragma mark - jetpackKnightViewController delegate
+
+- (void)jetpackKnightGameOverBackToMenu:(JetpackKnightViewController *)vc {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - matchmakerViewController delegate
+
+- (void)matchmakerViewController:(GKMatchmakerViewController *)viewController didFindMatch:(GKMatch *)match {
+    JetpackKnightViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"JetpackKnightViewController"];
+    vc.match = match;
+    vc.delegate = self;
+    [[[AppDelegate sharedInstance] activeViewController] presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)matchmakerViewController:(GKMatchmakerViewController *)viewController didFailWithError:(NSError *)error {
+    NSLog(@"matchmaker...didFailWithError: %@", [error localizedDescription]);
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)matchmakerViewControllerWasCancelled:(GKMatchmakerViewController *)viewController {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end

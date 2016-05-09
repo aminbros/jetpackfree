@@ -12,6 +12,8 @@
                        maxForce->y * (maxVelocity->y - velocity->y) / maxVelocity->y);
 }
 
+
+
 - (id)copyWithZone:(NSZone *)zone
 {
     Character *i = [super copyWithZone:zone];

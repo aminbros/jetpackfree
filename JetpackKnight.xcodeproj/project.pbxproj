@@ -143,6 +143,8 @@
 		942D6F791CD6FDED00000453 /* JetpackKnightGame.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D6F781CD6FDED00000453 /* JetpackKnightGame.m */; };
 		942D6F7F1CD72C1100000453 /* JetpackKnightController.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D6F7E1CD72C1100000453 /* JetpackKnightController.m */; };
 		942D6F821CD73F9600000453 /* JetpackKnightPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D6F811CD73F9600000453 /* JetpackKnightPlayer.m */; };
+		942D6F851CDCBB3900000453 /* GameNetworkProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D6F841CDCBB3900000453 /* GameNetworkProtocol.m */; };
+		942D6F8B1CDD3C3B00000453 /* RandomGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 942D6F8A1CDD3C3B00000453 /* RandomGenerator.m */; };
 		9479C4F81CCBAF2A003B1FF7 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9479C4F71CCBAF2A003B1FF7 /* GameViewController.m */; };
 		947C033C1CCBFEB2000E3172 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 947C02751CCBFEB2000E3172 /* b2BroadPhase.cpp */; };
 		947C033D1CCBFEB2000E3172 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 947C02771CCBFEB2000E3172 /* b2CollideCircle.cpp */; };
@@ -190,6 +192,9 @@
 		947C039D1CCBFEB2000E3172 /* b2WeldJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 947C03321CCBFEB2000E3172 /* b2WeldJoint.cpp */; };
 		947C039E1CCBFEB2000E3172 /* b2WheelJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 947C03341CCBFEB2000E3172 /* b2WheelJoint.cpp */; };
 		947C039F1CCBFEB2000E3172 /* b2Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 947C03371CCBFEB2000E3172 /* b2Rope.cpp */; };
+		94CD11F01CDFE73E00181EA4 /* ROUDataTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CD11E91CDFE73E00181EA4 /* ROUDataTypes.m */; };
+		94CD11F11CDFE73E00181EA4 /* ROUSerialQueueTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CD11EC1CDFE73E00181EA4 /* ROUSerialQueueTimer.m */; };
+		94CD11F21CDFE73E00181EA4 /* ROUSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CD11EF1CDFE73E00181EA4 /* ROUSession.m */; };
 		DD1CDBA41A81B0C4003DB359 /* angrybirds-regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DD1CDBA31A81B0C4003DB359 /* angrybirds-regular.ttf */; };
 		DD28DD2D1B88C381004F9A76 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD28DD2C1B88C381004F9A76 /* Social.framework */; };
 		DD2CC50A1C70C2FF005C2A9C /* Chartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD2CC5091C70C2FF005C2A9C /* Chartboost.framework */; };
@@ -379,6 +384,10 @@
 		942D6F7E1CD72C1100000453 /* JetpackKnightController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackKnightController.m; sourceTree = "<group>"; };
 		942D6F801CD73F9600000453 /* JetpackKnightPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackKnightPlayer.h; sourceTree = "<group>"; };
 		942D6F811CD73F9600000453 /* JetpackKnightPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackKnightPlayer.m; sourceTree = "<group>"; };
+		942D6F831CDCBB3900000453 /* GameNetworkProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameNetworkProtocol.h; sourceTree = "<group>"; };
+		942D6F841CDCBB3900000453 /* GameNetworkProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameNetworkProtocol.m; sourceTree = "<group>"; };
+		942D6F891CDD3C3B00000453 /* RandomGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomGenerator.h; sourceTree = "<group>"; };
+		942D6F8A1CDD3C3B00000453 /* RandomGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomGenerator.m; sourceTree = "<group>"; };
 		9479C4F61CCBAF2A003B1FF7 /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
 		9479C4F71CCBAF2A003B1FF7 /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
 		947C02711CCBFEB2000E3172 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
@@ -474,6 +483,14 @@
 		947C03351CCBFEB2000E3172 /* b2WheelJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2WheelJoint.h; sourceTree = "<group>"; };
 		947C03371CCBFEB2000E3172 /* b2Rope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2Rope.cpp; sourceTree = "<group>"; };
 		947C03381CCBFEB2000E3172 /* b2Rope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2Rope.h; sourceTree = "<group>"; };
+		94CD11E81CDFE73E00181EA4 /* ROUDataTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROUDataTypes.h; sourceTree = "<group>"; };
+		94CD11E91CDFE73E00181EA4 /* ROUDataTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ROUDataTypes.m; sourceTree = "<group>"; };
+		94CD11EA1CDFE73E00181EA4 /* ROUPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROUPrivate.h; sourceTree = "<group>"; };
+		94CD11EB1CDFE73E00181EA4 /* ROUSerialQueueTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROUSerialQueueTimer.h; sourceTree = "<group>"; };
+		94CD11EC1CDFE73E00181EA4 /* ROUSerialQueueTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ROUSerialQueueTimer.m; sourceTree = "<group>"; };
+		94CD11ED1CDFE73E00181EA4 /* ROUSession_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROUSession_Private.h; sourceTree = "<group>"; };
+		94CD11EE1CDFE73E00181EA4 /* ROUSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROUSession.h; sourceTree = "<group>"; };
+		94CD11EF1CDFE73E00181EA4 /* ROUSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ROUSession.m; sourceTree = "<group>"; };
 		DD1CDBA31A81B0C4003DB359 /* angrybirds-regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "angrybirds-regular.ttf"; sourceTree = "<group>"; };
 		DD28DD2C1B88C381004F9A76 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		DD2CC5091C70C2FF005C2A9C /* Chartboost.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Chartboost.framework; sourceTree = "<group>"; };
@@ -592,6 +609,7 @@
 		7CDBF58517C34336007B53EA = {
 			isa = PBXGroup;
 			children = (
+				94CD11E61CDFE73E00181EA4 /* RoUTP */,
 				947C02701CCBFEB2000E3172 /* Box2D */,
 				DD50A3721A7D4770002D3725 /* Images.xcassets */,
 				7C72C63719712E1D006FD5AC /* HelpViewController.h */,
@@ -804,6 +822,10 @@
 				942A81511CD034CB00672C0F /* GameView.m */,
 				9479C4F61CCBAF2A003B1FF7 /* GameViewController.h */,
 				9479C4F71CCBAF2A003B1FF7 /* GameViewController.m */,
+				942D6F831CDCBB3900000453 /* GameNetworkProtocol.h */,
+				942D6F841CDCBB3900000453 /* GameNetworkProtocol.m */,
+				942D6F891CDD3C3B00000453 /* RandomGenerator.h */,
+				942D6F8A1CDD3C3B00000453 /* RandomGenerator.m */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -962,6 +984,29 @@
 				947C03381CCBFEB2000E3172 /* b2Rope.h */,
 			);
 			path = Rope;
+			sourceTree = "<group>";
+		};
+		94CD11E61CDFE73E00181EA4 /* RoUTP */ = {
+			isa = PBXGroup;
+			children = (
+				94CD11E71CDFE73E00181EA4 /* Private */,
+				94CD11EE1CDFE73E00181EA4 /* ROUSession.h */,
+				94CD11EF1CDFE73E00181EA4 /* ROUSession.m */,
+			);
+			path = RoUTP;
+			sourceTree = "<group>";
+		};
+		94CD11E71CDFE73E00181EA4 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				94CD11E81CDFE73E00181EA4 /* ROUDataTypes.h */,
+				94CD11E91CDFE73E00181EA4 /* ROUDataTypes.m */,
+				94CD11EA1CDFE73E00181EA4 /* ROUPrivate.h */,
+				94CD11EB1CDFE73E00181EA4 /* ROUSerialQueueTimer.h */,
+				94CD11EC1CDFE73E00181EA4 /* ROUSerialQueueTimer.m */,
+				94CD11ED1CDFE73E00181EA4 /* ROUSession_Private.h */,
+			);
+			path = Private;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1163,6 +1208,7 @@
 				947C03921CCBFEB2000E3172 /* b2PolygonContact.cpp in Sources */,
 				947C03471CCBFEB2000E3172 /* b2PolygonShape.cpp in Sources */,
 				947C03961CCBFEB2000E3172 /* b2Joint.cpp in Sources */,
+				942D6F8B1CDD3C3B00000453 /* RandomGenerator.m in Sources */,
 				947C03421CCBFEB2000E3172 /* b2DynamicTree.cpp in Sources */,
 				947C034B1CCBFEB2000E3172 /* b2Settings.cpp in Sources */,
 				7C72C63919712E1D006FD5AC /* HelpViewController.m in Sources */,
@@ -1170,6 +1216,7 @@
 				947C03431CCBFEB2000E3172 /* b2TimeOfImpact.cpp in Sources */,
 				942ABAF91CCF09E000B18D0E /* Character.m in Sources */,
 				947C03491CCBFEB2000E3172 /* b2Draw.cpp in Sources */,
+				942D6F851CDCBB3900000453 /* GameNetworkProtocol.m in Sources */,
 				942ABB0F1CCF09EC00B18D0E /* ObjectImageDrawable.m in Sources */,
 				942ABB101CCF09EC00B18D0E /* ObjectTweenDrawable.m in Sources */,
 				947C03481CCBFEB2000E3172 /* b2BlockAllocator.cpp in Sources */,
@@ -1181,9 +1228,11 @@
 				942ABB0C1CCF09EC00B18D0E /* JetpackKnightGameData.m in Sources */,
 				947C03401CCBFEB2000E3172 /* b2Collision.cpp in Sources */,
 				942ABAFA1CCF09E000B18D0E /* DynamicRTree.mm in Sources */,
+				94CD11F21CDFE73E00181EA4 /* ROUSession.m in Sources */,
 				7CDBF5A217C34336007B53EA /* AppDelegate.m in Sources */,
 				947C03941CCBFEB2000E3172 /* b2FrictionJoint.cpp in Sources */,
 				942ABB141CCF914900B18D0E /* Bound.m in Sources */,
+				94CD11F01CDFE73E00181EA4 /* ROUDataTypes.m in Sources */,
 				7CDBF5B117C34337007B53EA /* ViewController.m in Sources */,
 				947C033C1CCBFEB2000E3172 /* b2BroadPhase.cpp in Sources */,
 				947C03451CCBFEB2000E3172 /* b2CircleShape.cpp in Sources */,
@@ -1201,6 +1250,7 @@
 				947C034D1CCBFEB2000E3172 /* b2Timer.cpp in Sources */,
 				947C03951CCBFEB2000E3172 /* b2GearJoint.cpp in Sources */,
 				947C03971CCBFEB2000E3172 /* b2MotorJoint.cpp in Sources */,
+				94CD11F11CDFE73E00181EA4 /* ROUSerialQueueTimer.m in Sources */,
 				942ABAFE1CCF09E000B18D0E /* GameSimulator.mm in Sources */,
 				947C03441CCBFEB2000E3172 /* b2ChainShape.cpp in Sources */,
 				947C033D1CCBFEB2000E3172 /* b2CollideCircle.cpp in Sources */,
@@ -1322,8 +1372,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Robert Cekay (MY34D2PQQG)";
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1337,7 +1386,7 @@
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpackknightgame.lite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "606c7f2e-ea73-4ca7-a900-5472f3ebfdfd";
+				PROVISIONING_PROFILE = "d55d57eb-4d7e-4d1d-b9b3-916f23a56f60";
 				STRINGS_FILE_OUTPUT_ENCODING = binary;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1349,8 +1398,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Robert Cekay (MY34D2PQQG)";
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1364,7 +1412,7 @@
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpackknightgame.lite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "606c7f2e-ea73-4ca7-a900-5472f3ebfdfd";
+				PROVISIONING_PROFILE = "d55d57eb-4d7e-4d1d-b9b3-916f23a56f60";
 				STRINGS_FILE_OUTPUT_ENCODING = binary;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

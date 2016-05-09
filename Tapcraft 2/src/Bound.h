@@ -10,7 +10,7 @@ typedef struct Bound {
 } Bound;
 
 #define CGPointDifference(a, b) ((CGPoint){(a).x - (b).x, (a).y - (b).y})
-#define CGPointMul(a, s) ((CGPoint){(a).x * (s), (a).y * (s)))
+#define CGPointMul(a, s) ((CGPoint){(a).x * (s), (a).y * (s)})
 #define CGSizeMul(a, s) ((CGSize){(a).width * (s), (a).height * (s)})
 
 extern Bound BoundFromRect(const CGRect *rect);

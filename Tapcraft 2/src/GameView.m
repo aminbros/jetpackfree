@@ -56,8 +56,10 @@
     CGContextScaleCTM(context, camera.screenScale.width, camera.screenScale.height);
     NSArray *objects = [self.game objectsToDrawOrdered];
     NSArray *positionZs = self.game.gameData.positionZs;
-    for(Object *object in objects) {
+    for(GObject *object in objects) {
         CGFloat positionZ = [[positionZs objectAtIndex:object.positionZIndex] doubleValue];
+        if(object.drawable == nil)
+            continue;
         [object.drawable drawOnContext:context
                                 object:object
                         cameraHalfSize:&cameraHalfSize

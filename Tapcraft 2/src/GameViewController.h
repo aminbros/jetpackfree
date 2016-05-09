@@ -14,9 +14,14 @@
 @property GameView *gameView;
 @property (nonatomic) Class gameClass;
 
+@property CADisplayLink *displayLink;
+@property SEL gameLoopSelector;
 @property BOOL pauseSimulation;
 
+- (void)destroyGame;
 - (void)initializeGame;
 - (void)startGame;
+
+- (void)gameLoop:(CADisplayLink*)displayLink;
 
 @end

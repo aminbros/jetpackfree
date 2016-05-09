@@ -5,6 +5,7 @@
 #import "Game.h"
 #import "GameDataGenerator.h"
 #import "DynamicRTree.h"
+#import "RandomGenerator.h"
 #include <stdlib.h>
 
 @implementation ObjectTemplateInfo
@@ -17,16 +18,6 @@
 @end
 
 @implementation GameDataGenerator
-
-+ (NSInteger)intRandomWithOffset:(NSInteger)offset limit:(NSInteger)limit
-{
-    return offset + (NSInteger)floor(((CGFloat)((long)random()) / ((NSInteger)RAND_MAX + 1)) * (limit - offset));
-}
-
-+ (CGFloat)floatRandomWithMax:(CGFloat)max
-{
-    return ((CGFloat)random() / RAND_MAX) * max;
-}
 
 + (void)generateObjectsIn:(NSMutableArray*)objects
        generateObjectInfo:(GenerateObjectInfo*)genObjInfo
@@ -51,21 +42,21 @@
             // pick a template
             ObjectTemplateInfo *templateInfo;
             if(genObjInfo.pickTemplateRandom)
-                templateInfo = genObjInfo.templatesInfo[[self intRandomWithOffset:0 limit:genObjInfo.templatesInfo.count]];
+                templateInfo = genObjInfo.templatesInfo[[RandomGenerator intRandomWithOffset:0 limit:genObjInfo.templatesInfo.count]];
             else
                 templateInfo = genObjInfo.templatesInfo[i % genObjInfo.templatesInfo.count];
 
-            Object *object = [templateInfo.object copy];
+            GObject *object = [templateInfo.object copy];
             // set position and apply variants by
             // trying to find the right position
             NSInteger maxTry = 4;
             NSInteger tryLen = 0;
             while(tryLen < maxTry) {
-                CGFloat scaleAdd = [self floatRandomWithMax:templateInfo.scaleVariant * 2] - templateInfo.scaleVariant;
+                CGFloat scaleAdd = [RandomGenerator floatRandomWithMax:templateInfo.scaleVariant * 2] - templateInfo.scaleVariant;
                 object.scale = CGPointMake(object.scale.x + scaleAdd, object.scale.y + scaleAdd);
                 Bound relBound = [object computeBoundRelativeToPosition];
-                CGFloat newX = x + [self floatRandomWithMax:genObjInfo.every - relBound.upperBound.x] - relBound.lowerBound.x;
-                object.position = CGPointMake(newX, object.position.y + [self floatRandomWithMax:templateInfo.positionYVariant] - templateInfo.positionYVariant / 2.0);
+                CGFloat newX = x + [RandomGenerator floatRandomWithMax:genObjInfo.every - relBound.upperBound.x] - relBound.lowerBound.x;
+                object.position = CGPointMake(newX, object.position.y + [RandomGenerator floatRandomWithMax:templateInfo.positionYVariant] - templateInfo.positionYVariant / 2.0);
                 if(protectOverlap || protectOverlapY) {
                     Bound objBound = [object computeBound];
                     Bound bound = BoundExtend(&objBound, genObjInfo.overlapCheckExtend);
@@ -101,22 +92,23 @@
     GameData *gd = [initialGameData copy];
     NSMutableArray *objects = [gd.objects mutableCopy];
 
-    CGFloat landEnd = config.landEnd;
+    CGFloat groundEnd = config.groundEnd;
     // build ground
-    CGFloat x = config.landStart;
+    CGFloat x = config.groundStart;
     NSString  *groundTag = config.groundTag;
     CGFloat groundY = config.groundY;
     CGFloat groundHeight = config.groundHeight;
     CGFloat groundPieceWidth = config.groundPieceWidth;
     id <ObjectDrawable>groundDrawable = config.groundDrawable;
-    while(x < landEnd) {
-        Object *groundPiece = [[Object alloc] init];
+    while(x < groundEnd) {
+        GObject *groundPiece = [[GObject alloc] init];
         groundPiece.tag = groundTag;
         groundPiece.position = CGPointMake(x, groundY);
         groundPiece.origin = CGPointMake(0, groundHeight); // at top of ground
         groundPiece.size = CGSizeMake(groundPieceWidth, groundHeight);
         groundPiece.drawable = groundDrawable;
         groundPiece.bodyType = BodyTypeStatic;
+        groundPiece.shapeType = GObjectShapeTypeTopEdge;
         groundPiece.physicsActive = YES;
         [objects addObject:groundPiece];
         x += groundPieceWidth;

@@ -9,6 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "JetpackKnightViewController.h"
 #import "Game.h"
+#import "GameNetworkProtocol.h"
+
+@interface PlayerAction : NSObject
+
+@property GNAction action;
+@property JetpackKnightPlayer *player;
+
+@end
+
+@interface ActivityStep : NSObject
+
+@property NSInteger timeStep;
+@property NSMutableArray<PlayerAction*> *actions;
+
+@end
 
 @interface JetpackKnightController : NSObject
 
@@ -16,10 +31,16 @@
 
 @property NSMutableSet *postStepDestorySet;
 
+// sorted with timeStep
+@property NSMutableArray<ActivityStep*> *activities;
+
 - (instancetype)initWithViewController:(JetpackKnightViewController*)viewController;
+
+- (void)didReceivedActionMsg:(GNActionMsg*)actionMsg fromRemotePlayer:(GKPlayer*)gkPlayer;
 
 @property (weak)JetpackKnightViewController *viewController;
 @property NSInteger playerIndex;
+@property NSMutableDictionary<NSString *, JetpackKnightPlayer*> *playersById;
 
 
 @end

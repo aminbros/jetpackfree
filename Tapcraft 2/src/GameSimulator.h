@@ -84,11 +84,11 @@ typedef BOOL(^SimQueryCallback)(SimFixture *fixture);
 @property (nonatomic,weak) id<SimContactDelegate> contactDelegate;
 
 - (instancetype)initWithConfig:(GameSimulatorConfig*)config;
-- (SimBody*)addObject:(Object*)object;
+- (SimBody*)addObject:(GObject*)object;
 - (void)removeBody:(SimBody*)object;
 - (void)step;
 - (void)queryForBound:(Bound*)bound callback:(SimQueryCallback)callback;
 
-- (void)updateObject:(Object*)object withBody:(SimBody*)body;
+- (void)updateObject:(GObject*)object withBody:(SimBody*)body;
 
 @end

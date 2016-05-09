@@ -7,7 +7,7 @@
 @implementation ObjectImageDrawable
 
 - (void)drawOnContext:(CGContextRef)context
-               object:(Object*)object
+               object:(GObject*)object
            cameraHalfSize:(CGSize*)cameraHalfSize
            cameraCenter:(CGPoint*)cameraCenter
             cameraFOV:(CGFloat)cameraFOV

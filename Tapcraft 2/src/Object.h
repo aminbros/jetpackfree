@@ -12,7 +12,12 @@ typedef NS_ENUM(NSInteger, BodyType) {
     BodyTypeDynamic
 };
 
-@interface Object : NSObject
+typedef NS_ENUM(NSInteger, GObjectShapeType) {
+    GObjectShapeTypeBox = 0,
+    GObjectShapeTypeTopEdge,
+};
+
+@interface GObject : NSObject
 
 @property CGPoint position;
 @property CGPoint origin;
@@ -31,6 +36,12 @@ typedef NS_ENUM(NSInteger, BodyType) {
 // Not active object is not simulated and cannot be collided
 @property BOOL physicsActive;
 
+@property GObjectShapeType shapeType;
+
+@property NSInteger collisionGroupIndex;
+@property NSInteger collisionCategoryBits;
+@property NSInteger collisionMaskBits;
+
 @property id tag;
 
 @property id objectGameInfo; // used in Game class
@@ -44,12 +55,15 @@ typedef NS_ENUM(NSInteger, BodyType) {
 - (Bound)computeBound;
 - (Bound)computeBoundRelativeToPosition;
 
-- (NSComparisonResult)zIndexCompare:(Object*)other;
-- (NSComparisonResult)zIndexCompareRev:(Object*)other;
+- (NSComparisonResult)zIndexCompare:(GObject*)other;
+- (NSComparisonResult)zIndexCompareRev:(GObject*)other;
 
 -(id)copyWithZone:(NSZone *)zone;
 
 -(BOOL)isEqual:(id)object;
 -(NSUInteger)hash;
+
+- (CGFloat)scalarMulAvgScale:(CGFloat)scalar;
+- (CGPoint)pointMulAvgScale:(CGPoint*)point;
 
 @end

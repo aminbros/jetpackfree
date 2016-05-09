@@ -21,7 +21,7 @@ NSString * const GameContactEnd = @"GameContactEnd";
 
 @interface Game()<SimContactDelegate>
 
-@property NSTimeInterval lastApplyUpdateTime;
+@property NSTimeInterval totalInterval;
 
 @end
 
@@ -55,7 +55,7 @@ NSString * const GameContactEnd = @"GameContactEnd";
     }
     _depthTrees = [dTrees copy];
     NSInteger depthTreesLen = _depthTrees.count;
-    for(Object *object in gd.objects) {
+    for(GObject *object in gd.objects) {
         if(object.positionZIndex < 0 || object.positionZIndex >= depthTreesLen)
             continue;
         DynamicRTree *dTree = [_depthTrees objectAtIndex:object.positionZIndex];
@@ -73,31 +73,24 @@ NSString * const GameContactEnd = @"GameContactEnd";
 - (void)start
 {
     _startDate = [NSDate date];
-    _lastApplyUpdateTime = 0;
 }
 
-- (void)update
+- (void)updateWithInterval:(NSTimeInterval)interval
 {
-    // move to right
-    NSTimeInterval time = [_startDate timeIntervalSinceNow];
-    NSTimeInterval interval = -(time + _lastApplyUpdateTime); // sinceNow is decreasing
-    if(_maxApplyUpdateTime > 0.0 && interval > _maxApplyUpdateTime) {
-        _lastApplyUpdateTime = -time; // skip elapsed time
+    _totalInterval += interval;
+    if(_maxApplyUpdateTime > 0.0 && _totalInterval > _maxApplyUpdateTime) {
+        // skip elapsed time
         return;
     }
-
     NSTimeInterval leastWaitForUpdate = _gameSimulator.timeStep;
-    NSInteger numInterval = 0;
-    while (interval > leastWaitForUpdate) {
+    while (_totalInterval >= leastWaitForUpdate) {
         
         [_delegate gamePreStep];
         [_gameSimulator step];
         [_delegate gamePostStep];
         
-        interval -= leastWaitForUpdate;
-        numInterval++;
+        _totalInterval -= leastWaitForUpdate;
     }
-    _lastApplyUpdateTime += leastWaitForUpdate * numInterval;
 }
 
 - (NSArray *)objectsToDrawOrdered
@@ -111,7 +104,7 @@ NSString * const GameContactEnd = @"GameContactEnd";
         if([dTree isKindOfClass:[NSNull class]]) {
             [_gameSimulator queryForBound:&viewBound callback:^BOOL(SimFixture *fixture) {
                 SimBody *body = [fixture getBody];
-                Object *object = [body getUserData];
+                GObject *object = [body getUserData];
                 if(object.physicsActive)
                     [_gameSimulator updateObject:object withBody:body];
                 [vObjects addObject:object];
@@ -119,7 +112,7 @@ NSString * const GameContactEnd = @"GameContactEnd";
             }];
         } else {
             [dTree queryForBound:&viewBound callback:^BOOL(NSInteger proxyId) {
-                    [vObjects addObject:(__bridge Object*)[dTree getUserDataWithProxyId:proxyId]];
+                    [vObjects addObject:(__bridge GObject*)[dTree getUserDataWithProxyId:proxyId]];
                     return YES;
                 }];
         }
@@ -135,7 +128,7 @@ NSString * const GameContactEnd = @"GameContactEnd";
     _camera.screenScale = CameraScaleForFitInSize(&_camera, &viewSize);
 }
 
-- (void)updateObjectPhysics:(Object*)object {
+- (void)updateObjectPhysics:(GObject*)object {
     if(!object.physicsActive)
         return;
     ObjectGameInfo *oGameInfo = object.objectGameInfo;
@@ -143,7 +136,7 @@ NSString * const GameContactEnd = @"GameContactEnd";
         [_gameSimulator updateObject:object withBody:oGameInfo.body];
 }
 
-- (void)setObjectPhysicsNeedsUpdate:(Object*)object
+- (void)setObjectPhysicsNeedsUpdate:(GObject*)object
 {
     //TODO:: Implement
 }

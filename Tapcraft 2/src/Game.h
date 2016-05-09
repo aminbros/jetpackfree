@@ -40,11 +40,11 @@ extern NSString * const GameContactEnd;
 
 - (instancetype)initWithGameData:(GameData*)gameData;
 - (NSArray*)objectsToDrawOrdered;
-- (void)update;
+- (void)updateWithInterval:(NSTimeInterval)interval;
 - (void)start;
 - (void)setCameraCenter:(CGPoint)center;
 - (void)initialize;
-- (void)setObjectPhysicsNeedsUpdate:(Object*)object;
+- (void)setObjectPhysicsNeedsUpdate:(GObject*)object;
 
 @end
 
