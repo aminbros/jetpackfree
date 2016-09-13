@@ -9,6 +9,11 @@
 #import "MenuViewController.h"
 #import "JetpackKnightViewController.h"
 #import "AppDelegate.h"
+
+#ifdef ENABLE_SCREEN_RECORDER
+#import "ASScreenRecorder.h"
+#endif
+
 AVAudioPlayer  *MainAudio;
 
 @interface MenuViewController ()<GKMatchmakerViewControllerDelegate,JetpackKnightViewControllerDelegate>
@@ -55,7 +60,14 @@ bool firstOne = YES;
         [MainAudio setVolume:0.0];
     }
     
-
+#ifdef ENABLE_SCREEN_RECORDER
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(recorderGesture:)];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.delaysTouchesBegan = YES;
+    [self.view addGestureRecognizer:tapGesture];
+#endif
+    
+    
 }
 -(void) viewDidAppear:(BOOL)animated
 {
@@ -142,6 +154,13 @@ bool firstOne = YES;
     
 }
 
+
+- (void)presentMatchmakerWithInvite:(GKInvite*)invite {
+    GKMatchmakerViewController *vc = [[GKMatchmakerViewController alloc] initWithInvite:invite];
+    vc.matchmakerDelegate = self;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 - (IBAction)didTapMakeMatch:(id)sender {
     GKMatchRequest *matchRequest = [[GKMatchRequest alloc] init];
     matchRequest.minPlayers = 2;
@@ -174,5 +193,20 @@ bool firstOne = YES;
 - (void)matchmakerViewControllerWasCancelled:(GKMatchmakerViewController *)viewController {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+#ifdef ENABLE_SCREEN_RECORDER
+- (IBAction)recorderGesture:(id)sender {
+    ASScreenRecorder *recorder = [ASScreenRecorder sharedInstance];
+    
+    if (recorder.isRecording) {
+        [recorder stopRecordingWithCompletion:^{
+            NSLog(@"Finished recording");
+        }];
+    } else {
+        [recorder startRecording];
+        NSLog(@"Start recording");
+    }
+}
+#endif
 
 @end

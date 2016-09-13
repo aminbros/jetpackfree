@@ -11,6 +11,7 @@
 
 // #define GAME_DEV
 // #define APP_WITH_ADS
+// #define ENABLE_SCREEN_RECORDER
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

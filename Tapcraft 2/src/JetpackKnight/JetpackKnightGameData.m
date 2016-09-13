@@ -136,9 +136,16 @@ NSString * const JetpackKnightGroundTag = @"ground";
     gd.positionZs = @[@1, @1.7, @3, @10];
     NSMutableArray *characters = [NSMutableArray new];
 
-    gd.groundDrawable = [self objectImageDrawableWithName:@"ground.png"];
+    ObjectImageDrawable *groundOID = [self objectImageDrawableWithName:@"ground.png"];
+    gd.groundDrawable = groundOID;
     gd.groundSize = gd.groundDrawable.imageRect.size;
-    gd.groundY = gd.groundDrawable.imageRect.size.height;
+    CGFloat groundYDiff = -0.2;
+    gd.distantGroundY = groundOID.imageRect.size.height;
+    gd.groundY = groundOID.imageRect.size.height + groundYDiff;
+    groundOID.imageRect = CGRectMake(groundOID.imageRect.origin.x,
+                                     groundOID.imageRect.origin.y +0.2,
+                                     groundOID.imageRect.size.width,
+                                     groundOID.imageRect.size.height);
     gd.groundTag = JetpackKnightGroundTag;
      
     // add game data resources and drawables
@@ -177,7 +184,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
 
 + (NSArray*)mkTreesTemplate:(JetpackKnightGameData*)gd {   
     GObject *o = [[GObject alloc] init];
-    o.position = CGPointMake(0, gd.groundY);
+    o.position = CGPointMake(0, gd.distantGroundY);
     [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"land1.png"] origin:@"bottom"];
     o.zIndex = -2;
     o.positionZIndex = 1;
@@ -189,7 +196,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
 
 + (NSArray*)mkBuildingsTemplate:(JetpackKnightGameData*)gd {   
     GObject *o = [[GObject alloc] init];
-    o.position = CGPointMake(0, gd.groundY);
+    o.position = CGPointMake(0, gd.distantGroundY);
     [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"mountain.png"] origin:@"bottom"];
     o.zIndex = -3;
     o.positionZIndex = 2;
@@ -215,6 +222,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
 + (NSArray*)mkDiamondsTemplate:(JetpackKnightGameData*)gd {
     GObject *o = [[GObject alloc] init];
     [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"diamond.png"] size:CGSizeMake(0.08 * GAME_SCALAR, 0.08 * GAME_SCALAR) origin:@"center"];
+    //o.renderOutline = YES;
     o.scale = CGPointMake(0.8, 0.8);
     o.zIndex = 1;
     o.bodyType = BodyTypeStatic;
@@ -228,6 +236,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
 + (NSArray*)mkRocketsTemplate:(JetpackKnightGameData*)gd {
     GObject *o = [[GObject alloc] init];
     [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:@"rocket.png"] size:CGSizeMake(0.1 * GAME_SCALAR, 0.1 * GAME_SCALAR) origin:@"center"];
+    //o.renderOutline = YES;
     o.scale = CGPointMake(0.7, 0.7);
     o.zIndex = 1;
     o.bodyType = BodyTypeStatic;
@@ -243,6 +252,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
         GObject *o = [[GObject alloc] init];
         o.position = CGPointMake(0, gd.groundY);
         [self defineObjectDimeAndDrawable:o withObjectImageDrawable:[self objectImageDrawableWithName:[NSString stringWithFormat:@"block%zd.png", i]] size:CGSizeMake(0.18 * GAME_SCALAR, 0.18 * GAME_SCALAR) origin:@"bottom"];
+        //o.renderOutline = YES;
         o.scale = CGPointMake(0.8, 0.8);
         o.zIndex = 1;
         o.bodyType = BodyTypeStatic;
@@ -268,7 +278,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
     c.size = CGSizeMake(0.13 * GAME_SCALAR, c.size.height);
     c.scale = CGPointMake(1.2, 1.2);
     c.origin = CGPointMake(c.size.width / 2.0, 0.0);
-    c.renderOutline = YES;
+    //c.renderOutline = YES;
     c.zIndex = 2;
     c.bodyType = BodyTypeDynamic;
     c.density = 1.0;
@@ -299,18 +309,18 @@ NSString * const JetpackKnightGroundTag = @"ground";
         @[
           @{
               @"property": @"runningDrawable",
-              @"fps": @15,
+              @"fps": @30,
               @"loop": @(ObjectImageDrawableInfinite),
               @"nameFormat": @"character%@.png",
-              @"framesNameArg1": @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"7",@"6",@"5",@"4",@"3",@"2",@"1"],
+              @"framesNameArg1": @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"7",@"6",@"5",@"4",@"3",@"2"],
               @"origin": @"bottom"
           },
           @{
               @"property": @"flyingDrawable",
-              @"fps": @15,
+              @"fps": @30,
               @"loop": @(ObjectImageDrawableInfinite),
               @"nameFormat": @"rocket%@.png",
-              @"framesNameArg1": @[@"0",@"1",@"2",@"3",@"4",@"5",@"4",@"3",@"2",@"1",@"0"],
+              @"framesNameArg1": @[@"0",@"1",@"2",@"3",@"4",@"5",@"4",@"3",@"2",@"1"],
               @"origin": @"bottom"
           },
           @{
@@ -365,6 +375,8 @@ NSString * const JetpackKnightGroundTag = @"ground";
         rect.size = CGSizeMul(oid.image.size, RASTER_SCALE);
         if([origin isEqual:@"top"])
             rect.origin = CGPointMake(0, rect.size.height);
+        else
+            rect.origin = CGPointMake(0, 0);
         oid.imageRect = rect;
         [otd_drawables addObject:oid];
     }
@@ -437,6 +449,7 @@ NSString * const JetpackKnightGroundTag = @"ground";
     gd.cloudsObjectTemplate = _cloudsObjectTemplate;
     gd.buildingsObjectTemplate = _buildingsObjectTemplate;
     gd.groundY = _groundY;
+    gd.distantGroundY = _distantGroundY;
     gd.groundSize = _groundSize;
     gd.groundDrawable = [_groundDrawable copy];
     gd.players = _players;

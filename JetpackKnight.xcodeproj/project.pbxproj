@@ -195,6 +195,10 @@
 		94CD11F01CDFE73E00181EA4 /* ROUDataTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CD11E91CDFE73E00181EA4 /* ROUDataTypes.m */; };
 		94CD11F11CDFE73E00181EA4 /* ROUSerialQueueTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CD11EC1CDFE73E00181EA4 /* ROUSerialQueueTimer.m */; };
 		94CD11F21CDFE73E00181EA4 /* ROUSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CD11EF1CDFE73E00181EA4 /* ROUSession.m */; };
+		94DA55B51CE4C11000056D3E /* ASScreenRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 94DA55B41CE4C11000056D3E /* ASScreenRecorder.m */; };
+		94DA55B71CE4C29700056D3E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94DA55B61CE4C29700056D3E /* CoreMedia.framework */; };
+		94DA55B91CE4C2B900056D3E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94DA55B81CE4C2B900056D3E /* CoreVideo.framework */; };
+		94DA55BB1CE4C2D500056D3E /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94DA55BA1CE4C2D500056D3E /* AssetsLibrary.framework */; };
 		DD1CDBA41A81B0C4003DB359 /* angrybirds-regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DD1CDBA31A81B0C4003DB359 /* angrybirds-regular.ttf */; };
 		DD28DD2D1B88C381004F9A76 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD28DD2C1B88C381004F9A76 /* Social.framework */; };
 		DD2CC50A1C70C2FF005C2A9C /* Chartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD2CC5091C70C2FF005C2A9C /* Chartboost.framework */; };
@@ -491,6 +495,11 @@
 		94CD11ED1CDFE73E00181EA4 /* ROUSession_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROUSession_Private.h; sourceTree = "<group>"; };
 		94CD11EE1CDFE73E00181EA4 /* ROUSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ROUSession.h; sourceTree = "<group>"; };
 		94CD11EF1CDFE73E00181EA4 /* ROUSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ROUSession.m; sourceTree = "<group>"; };
+		94DA55B31CE4C11000056D3E /* ASScreenRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASScreenRecorder.h; sourceTree = "<group>"; };
+		94DA55B41CE4C11000056D3E /* ASScreenRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASScreenRecorder.m; sourceTree = "<group>"; };
+		94DA55B61CE4C29700056D3E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		94DA55B81CE4C2B900056D3E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		94DA55BA1CE4C2D500056D3E /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		DD1CDBA31A81B0C4003DB359 /* angrybirds-regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "angrybirds-regular.ttf"; sourceTree = "<group>"; };
 		DD28DD2C1B88C381004F9A76 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		DD2CC5091C70C2FF005C2A9C /* Chartboost.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Chartboost.framework; sourceTree = "<group>"; };
@@ -523,6 +532,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94DA55BB1CE4C2D500056D3E /* AssetsLibrary.framework in Frameworks */,
+				94DA55B91CE4C2B900056D3E /* CoreVideo.framework in Frameworks */,
+				94DA55B71CE4C29700056D3E /* CoreMedia.framework in Frameworks */,
 				DD2CC50C1C70C369005C2A9C /* AdSupport.framework in Frameworks */,
 				DD50A3891A7DA11C002D3725 /* StoreKit.framework in Frameworks */,
 				DD28DD2D1B88C381004F9A76 /* Social.framework in Frameworks */,
@@ -609,6 +621,7 @@
 		7CDBF58517C34336007B53EA = {
 			isa = PBXGroup;
 			children = (
+				94DA55B21CE4C0D700056D3E /* ScreeenRecorder */,
 				94CD11E61CDFE73E00181EA4 /* RoUTP */,
 				947C02701CCBFEB2000E3172 /* Box2D */,
 				DD50A3721A7D4770002D3725 /* Images.xcassets */,
@@ -634,6 +647,9 @@
 		7CDBF59017C34336007B53EA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				94DA55BA1CE4C2D500056D3E /* AssetsLibrary.framework */,
+				94DA55B81CE4C2B900056D3E /* CoreVideo.framework */,
+				94DA55B61CE4C29700056D3E /* CoreMedia.framework */,
 				DD2CC50B1C70C369005C2A9C /* AdSupport.framework */,
 				DD2CC5091C70C2FF005C2A9C /* Chartboost.framework */,
 				DD28DD2C1B88C381004F9A76 /* Social.framework */,
@@ -1009,6 +1025,16 @@
 			path = Private;
 			sourceTree = "<group>";
 		};
+		94DA55B21CE4C0D700056D3E /* ScreeenRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				94DA55B31CE4C11000056D3E /* ASScreenRecorder.h */,
+				94DA55B41CE4C11000056D3E /* ASScreenRecorder.m */,
+			);
+			name = ScreeenRecorder;
+			path = ScreenRecorder;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1267,6 +1293,7 @@
 				947C039A1CCBFEB2000E3172 /* b2PulleyJoint.cpp in Sources */,
 				947C039B1CCBFEB2000E3172 /* b2RevoluteJoint.cpp in Sources */,
 				947C034C1CCBFEB2000E3172 /* b2StackAllocator.cpp in Sources */,
+				94DA55B51CE4C11000056D3E /* ASScreenRecorder.m in Sources */,
 				942ABAFD1CCF09E000B18D0E /* GameDataGenerator.m in Sources */,
 				947C03901CCBFEB2000E3172 /* b2EdgeAndPolygonContact.cpp in Sources */,
 				947C03911CCBFEB2000E3172 /* b2PolygonAndCircleContact.cpp in Sources */,
@@ -1398,7 +1425,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Robert Cekay (MY34D2PQQG)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Robert Cekay (2UMAAULL76)";
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1412,7 +1439,7 @@
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jetpackknightgame.lite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d55d57eb-4d7e-4d1d-b9b3-916f23a56f60";
+				PROVISIONING_PROFILE = "b79b0503-1a51-4c27-bc88-5e5823109631";
 				STRINGS_FILE_OUTPUT_ENCODING = binary;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

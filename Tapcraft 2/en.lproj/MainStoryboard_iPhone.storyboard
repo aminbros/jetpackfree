@@ -239,6 +239,10 @@
                                 <rect key="frame" x="98" y="90" width="284" height="160"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="hme-EX-i50">
+                                        <rect key="frame" x="-15" y="44" width="139" height="135"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </imageView>
                                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="GameOverBackground.png" id="iqk-hm-EvS">
                                         <rect key="frame" x="51" y="7" width="182" height="133"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
@@ -260,7 +264,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="menuButton" destination="2" eventType="touchUpInside" id="jln-eB-VgB"/>
+                                            <action selector="menuButton" destination="2" eventType="touchUpInside" id="530-Dp-NPF"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="TSE-6P-5qC">
@@ -273,10 +277,6 @@
                                             <action selector="shareScore" destination="2" eventType="touchUpInside" id="be3-hR-cH6"/>
                                         </connections>
                                     </button>
-                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="hme-EX-i50">
-                                        <rect key="frame" x="-15" y="44" width="139" height="135"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -339,14 +339,14 @@
                                 <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <size key="shadowOffset" width="-1" height="-1"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hAD-2D-yC4" userLabel="RightShoot">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hAD-2D-yC4" userLabel="RightShoot">
                                 <rect key="frame" x="437" y="264" width="28" height="41"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <state key="normal" image="playButtonOrange.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3Rb-Lm-1Ou" userLabel="LeftShoot">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3Rb-Lm-1Ou" userLabel="LeftShoot">
                                 <rect key="frame" x="15" y="264" width="28" height="41"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <state key="normal" image="playButtonOrange.png">

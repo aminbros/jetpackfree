@@ -92,10 +92,11 @@ static void playerBeginContactWithRocket(JetpackKnightController *ctr, SimContac
 
 @implementation JetpackKnightController
 
-- (instancetype)initWithViewController:(JetpackKnightViewController*)viewController
+- (instancetype)initWithViewController:(JetpackKnightViewController*)viewController playerIndex:(NSInteger)playerIndex
 {
     self = [super init];
     if(self != nil) {
+        _playerIndex = playerIndex;
         _activities = [NSMutableArray new];
         
         _postStepDestorySet = [NSMutableSet new];
@@ -119,7 +120,6 @@ static void playerBeginContactWithRocket(JetpackKnightController *ctr, SimContac
         JetpackKnightPlayer *player = [_viewController.jGame.players objectAtIndex:self.playerIndex];
         Character *character = player.character;
         [_viewController.game setCameraCenter:CGPointMake(character.position.x + _game.jGameData.characterPinOffset.x, _viewController.game.camera.center.y + _game.jGameData.characterPinOffset.y)];
-        
     }
     return self;
 }
@@ -237,10 +237,13 @@ static void playerBeginContactWithRocket(JetpackKnightController *ctr, SimContac
         GNActionMsg *msg = [GNActionMsg new];
         msg.action = action;
         // simulationStep is at next simulation step
-        msg.timeStep = (uint32_t)MAX(self.viewController.lastSentCommitTimeStep + 1, self.game.gameSimulator.simulationStep);
-        [self.viewController sendDataToAll:[GameNetworkProtocol makePacketWithMessage:GN_ACTION data:[msg dataForPacket]]];
+        msg.timeStep = (uint32_t)(self.viewController.lastSentCommitTimeStep + 1);
+        
+        [self.viewController.nextCommitActions addObject:[NSNumber numberWithInteger:action]];
+        
+        // [self.viewController sendDataToAll:[GameNetworkProtocol makePacketWithMessage:GN_ACTION data:[msg dataForPacket]]];
         // add to activities
-        [self didReceivedActionMsg:msg fromRemotePlayer:((JetpackKnightPlayer*)[self.game.players objectAtIndex:_playerIndex]).gkPlayer];
+        [self didReceivedActionMsg:msg fromPlayer:((JetpackKnightPlayer*)[self.game.players objectAtIndex:_playerIndex])];
     } else {
         ActivityStep *activityStep = [self activityStepForTimeStep:self.game.gameSimulator.simulationStep];
         PlayerAction *paction = [PlayerAction new];
@@ -281,15 +284,26 @@ static void playerBeginContactWithRocket(JetpackKnightController *ctr, SimContac
     return foundActivity;
 }
 
-- (void)didReceivedActionMsg:(GNActionMsg*)actionMsg fromRemotePlayer:(GKPlayer*)gkPlayer {
+- (void)didReceivedActionMsg:(GNActionMsg*)actionMsg fromPlayer:(JetpackKnightPlayer*)player {
     ActivityStep *activityStep = [self activityStepForTimeStep:actionMsg.timeStep];
-    JetpackKnightPlayer *player = [_playersById objectForKey:gkPlayer.playerID];
-    NSAssert(player != nil, @"Never!");
     PlayerAction *paction = [PlayerAction new];
     paction.action = actionMsg.action;
     paction.player = player;
     [activityStep.actions addObject:paction];
 }
+
+
+
+- (void)didReceivedCommitMsg:(GNCommitMsg*)commitMsg fromPlayer:(JetpackKnightPlayer*)player {
+    ActivityStep *activityStep = [self activityStepForTimeStep:commitMsg.timeStep];
+    for(uint16_t i = 0, len = commitMsg.actionsSize; i < len; ++i) {
+        PlayerAction *paction = [PlayerAction new];
+        paction.action = commitMsg.actions[i];
+        paction.player = player;
+        [activityStep.actions addObject:paction];
+    }
+}
+
 
 #pragma mark - GameDelegate
 

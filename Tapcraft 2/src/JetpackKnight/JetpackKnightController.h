@@ -34,13 +34,14 @@
 // sorted with timeStep
 @property NSMutableArray<ActivityStep*> *activities;
 
-- (instancetype)initWithViewController:(JetpackKnightViewController*)viewController;
+- (instancetype)initWithViewController:(JetpackKnightViewController*)viewController playerIndex:(NSInteger)playerIndex;
 
-- (void)didReceivedActionMsg:(GNActionMsg*)actionMsg fromRemotePlayer:(GKPlayer*)gkPlayer;
+- (void)didReceivedActionMsg:(GNActionMsg*)actionMsg fromPlayer:(JetpackKnightPlayer*)player;
+- (void)didReceivedCommitMsg:(GNCommitMsg*)commitMsg fromPlayer:(JetpackKnightPlayer*)player;
 - (void)displayPlayerStatus;
 
 @property (weak)JetpackKnightViewController *viewController;
-@property NSInteger playerIndex;
+@property (readonly) NSInteger playerIndex;
 @property NSMutableDictionary<NSString *, JetpackKnightPlayer*> *playersById;
 
 

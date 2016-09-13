@@ -12,6 +12,7 @@
 #import <AdSupport/AdSupport.h>
 #import "JetpackKnightViewController.h"
 #import "MenuViewController.h"
+#import "ASScreenRecorder.h"
 
 
 
@@ -26,6 +27,7 @@
     // replace view for game dev
 #ifdef GAME_DEV
     if(YES) {
+        [[ASScreenRecorder sharedInstance] startRecording];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
         [_window setRootViewController:[storyboard instantiateViewControllerWithIdentifier:@"JetpackKnightViewController"]];
         return NO;
@@ -74,6 +76,10 @@
 
 - (void)player:(GKPlayer *)player didAcceptInvite:(GKInvite *)invite {
     NSLog(@"player:didAcceptInvite:");
+    MenuViewController *menuViewController = (id)[self activeViewController];
+    if(![menuViewController isKindOfClass:[menuViewController class]])
+        return;
+    [menuViewController presentMatchmakerWithInvite:invite];
 }
 
 - (void)player:(GKPlayer *)player didRequestMatchWithRecipients:(NSArray<GKPlayer *> *)recipientPlayers {

@@ -16,7 +16,6 @@
     // place players
     for(JetpackKnightPlayer *player in _players) {
         Character *character = player.character;
-        character.renderOutline = YES;
         character.drawable = character.runningDrawable;
         ObjectGameInfo *oGameInfo = [[ObjectGameInfo alloc] init];
         character.objectGameInfo = oGameInfo;

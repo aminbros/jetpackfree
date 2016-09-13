@@ -18,6 +18,8 @@
 - (IBAction)openFacebook;
 - (IBAction)gopro;
 
+- (void)presentMatchmakerWithInvite:(GKInvite*)invite;
+
 @property (weak, nonatomic) IBOutlet UIButton *matchMakerButton;
 
 @end

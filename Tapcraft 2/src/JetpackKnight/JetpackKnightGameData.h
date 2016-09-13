@@ -22,6 +22,7 @@ extern NSString * const JetpackKnightGroundTag;
 @property NSArray *cloudsObjectTemplate;
 @property NSArray *buildingsObjectTemplate;
 
+@property CGFloat distantGroundY;
 @property CGFloat groundY;
 @property CGSize groundSize;
 @property NSString *groundTag;

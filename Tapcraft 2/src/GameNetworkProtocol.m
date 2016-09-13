@@ -66,6 +66,57 @@
 
 @end
 
+@implementation GNCommitMsg
+
+- (void)dealloc {
+    if(self.actions != NULL)
+        free(self.actions);
+}
+
+- (NSData*)dataForPacket {
+    NSMutableData *mdata = [NSMutableData new];
+    NSInteger offset;
+    
+    uint32_t lui32 = CFSwapInt32HostToLittle(self.timeStep);
+    [mdata appendBytes:&lui32 length:sizeof(lui32)];
+    offset = sizeof(lui32);
+    
+    [GameNetworkProtocol writeArrayUInt16:self.actions size:self.actionsSize toData:mdata];
+    
+    return mdata;
+}
+
++ (instancetype)instanceFromData:(NSData *)data {
+    GNCommitMsg *commitMsg = [self new];
+    NSInteger offset;
+    uint32_t lui32;
+    [data getBytes:&lui32 range:NSMakeRange(0, sizeof(lui32))];
+    commitMsg.timeStep = CFSwapInt32LittleToHost(lui32);
+    offset = sizeof(lui32);
+    
+    // actions
+    uint16_t size;
+    commitMsg.actions = [GameNetworkProtocol readArrayUInt16FromData:data offset:offset endsAt:nil size:&size];
+    commitMsg.actionsSize = size;
+    
+    return commitMsg;
+}
+
++ (instancetype)commitTimeStep:(uint32_t)timeStep actions:(NSArray*)actionsArr {
+    GNCommitMsg *commitMsg = [self new];
+    commitMsg.timeStep = timeStep;
+    uint16_t size = (uint16_t)actionsArr.count;
+    uint16_t *actions = malloc(sizeof(*actions) * size);
+    for(uint16_t i = 0; i < size; ++i) {
+        actions[i] = (uint16_t)[[actionsArr objectAtIndex:i] integerValue];
+    }
+    commitMsg.actions = actions;
+    commitMsg.actionsSize = size;
+    return commitMsg;
+}
+
+@end
+
 @implementation GNInitGameMsg
 
 - (NSData *)dataForPacket {
@@ -129,6 +180,62 @@
     [packet.data getBytes:&buint32 length:sizeof(buint32)];
     *message = packet.message;
     *uint32 = CFSwapInt32LittleToHost(buint32);
+}
+
+// user is responsible to free return value free
++ (uint16_t*)readArrayUInt16FromData:(NSData*)data offset:(NSInteger)offset endsAt:(NSInteger*)endsAt size:(uint16_t*)sizep {
+    uint16_t size;
+    [data getBytes:&size range:NSMakeRange(offset, sizeof(size))];
+    size = CFSwapInt16LittleToHost(size);
+    offset += sizeof(size);
+    uint16_t *arr = malloc(size * sizeof(uint16_t));
+    for(uint16_t i = 0; i < size; ++i) {
+        uint16_t ui16;
+        [data getBytes:&ui16 range:NSMakeRange(offset, sizeof(ui16))];
+        offset += sizeof(ui16);
+        arr[i] = CFSwapInt16LittleToHost(ui16);
+    }
+    if(endsAt != nil)
+        *endsAt = offset;
+    *sizep = size;
+    return arr;
+}
+
++ (void)writeArrayUInt16:(uint16_t*)ui16p size:(uint16_t)size toData:(NSMutableData*)mdata {
+    uint16_t lsize = CFSwapInt16HostToLittle(size);
+    [mdata appendBytes:&lsize length:sizeof(lsize)];
+    for(uint16_t i = 0; i < size; ++i) {
+        uint16_t ui16 = CFSwapInt16HostToLittle((uint16_t)ui16p[i]);
+        [mdata appendBytes:&ui16 length:sizeof(ui16)];
+    }
+}
+
+// user is responsible to free return value free
++ (uint32_t*)readArrayUInt32FromData:(NSData*)data offset:(NSInteger)offset endsAt:(NSInteger*)endsAt size:(uint16_t*)sizep {
+    uint16_t size;
+    [data getBytes:&size range:NSMakeRange(offset, sizeof(size))];
+    size = CFSwapInt16LittleToHost(size);
+    offset += sizeof(size);
+    uint32_t *arr = malloc(size * sizeof(uint32_t));
+    for(uint16_t i = 0; i < size; ++i) {
+        uint32_t ui32;
+        [data getBytes:&ui32 range:NSMakeRange(offset, sizeof(ui32))];
+        offset += sizeof(ui32);
+        arr[i] = CFSwapInt32LittleToHost(ui32);
+    }
+    if(endsAt != nil)
+        *endsAt = offset;
+    *sizep = size;
+    return arr;
+}
+
++ (void)writeArrayUInt32:(uint32_t*)ui32p size:(uint16_t)size toData:(NSMutableData*)mdata {
+    uint16_t lsize = CFSwapInt16HostToLittle((uint16_t)size);
+    [mdata appendBytes:&lsize length:sizeof(lsize)];
+    for(uint16_t i = 0; i < size; ++i) {
+        uint32_t ui32 = CFSwapInt32HostToLittle((uint32_t)ui32p[i]);
+        [mdata appendBytes:&ui32 length:sizeof(ui32)];
+    }
 }
 
 + (uint32_t)readUInt32FromData:(NSData*)data offset:(NSInteger)offset endsAt:(NSInteger*)endsAt {

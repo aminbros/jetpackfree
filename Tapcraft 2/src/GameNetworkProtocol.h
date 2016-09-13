@@ -47,6 +47,16 @@ typedef NS_ENUM(uint16_t, GNAction) {
 
 @end
 
+@interface GNCommitMsg : NSObject<GNPacketData>
+
++ (instancetype)commitTimeStep:(uint32_t)timeStep actions:(NSArray*)actionsArr;
+
+@property uint32_t timeStep;
+@property GNAction *actions;
+@property uint16_t actionsSize;
+
+@end
+
 @interface GNInitGameMsg : NSObject<GNPacketData>
 
 @property uint32_t randomSeed;
@@ -61,6 +71,12 @@ typedef NS_ENUM(uint16_t, GNAction) {
 + (void)readPacket:(NSData*)packetData message:(GameNetworkMessage*)message uint32Data:(uint32_t*)uint32;
 + (NSString*)readStringFromData:(NSData*)data offset:(NSInteger)offset endsAt:(NSInteger*)endsAt;
 + (void)writeString:(NSString*)string toData:(NSMutableData*)mdata;
+
++ (uint16_t*)readArrayUInt16FromData:(NSData*)data offset:(NSInteger)offset endsAt:(NSInteger*)endsAt size:(uint16_t*)sizep;
++ (void)writeArrayUInt16:(uint16_t*)ui16p size:(uint16_t)size toData:(NSMutableData*)mdata;
++ (uint32_t*)readArrayUInt32FromData:(NSData*)data offset:(NSInteger)offset endsAt:(NSInteger*)endsAt size:(uint16_t*)sizep;
+
++ (void)writeArrayUInt32:(uint32_t*)ui32p size:(uint16_t)size toData:(NSMutableData*)mdata;
 
 + (uint32_t)readUInt32FromData:(NSData*)data offset:(NSInteger)offset endsAt:(NSInteger*)endsAt;
 @end

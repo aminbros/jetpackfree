@@ -12,6 +12,10 @@
 #import "RandomGenerator.h"
 #import "ROUSession.h"
 
+#ifdef ENABLE_SCREEN_RECORDER
+#import "ASScreenRecorder.h"
+#endif
+
 #define COUNT_DOWN_LABEL_COUNTING_TAG 0x0010
 
 
@@ -213,16 +217,26 @@
             break;
         }
         case GN_ACTION: {
+            // currently not used
             GNActionMsg *actionMsg = [GNActionMsg instanceFromData:packet.data];
-            [self.gameController didReceivedActionMsg:actionMsg fromRemotePlayer:player];
+            JetpackKnightPlayer *gPlayer = [self.gameController.playersById objectForKey:player.playerID];
+            NSAssert(gPlayer != nil, @"Never!");
+            [self.gameController didReceivedActionMsg:actionMsg fromPlayer:gPlayer];
             break;
         }
         case GN_COMMIT: {
-            uint32_t timeStep = [GameNetworkProtocol readUInt32FromData:packet.data offset:0 endsAt:nil];
+            GNCommitMsg *commitMsg = [GNCommitMsg instanceFromData:packet.data];
+            
+            JetpackKnightPlayer *gPlayer = [self.gameController.playersById objectForKey:player.playerID];
+            NSAssert(gPlayer != nil, @"Never!");
+            
+            [self.gameController didReceivedCommitMsg:commitMsg fromPlayer:gPlayer];
+            
             NSMutableDictionary *playerData = [_playersDataById objectForKey:player.playerID];
-            [playerData setObject:[NSNumber numberWithInteger:(NSInteger)timeStep] forKey:@"last_commit"];
+            [playerData setObject:[NSNumber numberWithInteger:(NSInteger)commitMsg.timeStep] forKey:@"last_commit"];
             NSInteger pleastCommit = _leastCommitTimeStep;
             [self updateLeastCommitTimeStep];
+            
             if(pleastCommit != _leastCommitTimeStep) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self networkGameLoop];
@@ -267,7 +281,6 @@
 - (void)checkAllPlayersConnected {
     if(self.match.expectedPlayerCount == 0 &&
        _playersIdConnectedToAll.count == self.match.players.count + 1) {
-        NSLog(@"peersConencted: players count: %zd playersConnected count: %zd", self.match.players.count, _playersIdConnectedToAll.count);
         // next step
         _peersConnected = YES;
         [self didPeersConnected];
@@ -419,6 +432,7 @@
         _lastSendCommitTime = 0;
         _lastSentCommitTimeStep = 0;
         _commitTimeoutInterval = 10;
+        _nextCommitActions = [NSMutableArray new];
     }
     [super startGame];
 }
@@ -439,7 +453,8 @@
     NSInteger commitTimeStep = self.game.gameSimulator.simulationStep;
     if(timeDiff > _sendCommitInterval && commitTimeStep > _lastSentCommitTimeStep) {
         // commit action until next step
-        [self sendDataToAll:[GameNetworkProtocol makePacketWithMessage:GN_COMMIT uint32Data:(uint32_t)commitTimeStep]];
+        [self sendDataToAll:[GameNetworkProtocol makePacketWithMessage:GN_COMMIT data:[[GNCommitMsg commitTimeStep:(uint32_t)commitTimeStep actions:self.nextCommitActions] dataForPacket]]];
+        self.nextCommitActions = [NSMutableArray new];
         
         NSMutableDictionary *playerData = [_playersDataById objectForKey:_localPlayer.playerID];
         [playerData setObject:[NSNumber numberWithInteger:commitTimeStep] forKey:@"last_commit"];
@@ -583,9 +598,8 @@
         self.jGameData.players = [players copy];
         
         [self initializeGame];
-        self.gameController = [[JetpackKnightController alloc] initWithViewController:self];
-        self.gameController.playerIndex = playerIndex;
-
+        self.gameController = [[JetpackKnightController alloc] initWithViewController:self playerIndex:playerIndex];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.gameView setNeedsDisplay];
             self.scoreLabel.text = @"";
@@ -706,6 +720,12 @@
 
 - (IBAction)didTapGameOverMenu:(id)sender {
     [_delegate jetpackKnightGameOverBackToMenu:self];
+#ifdef ENABLE_SCREEN_RECORDER
+    [[ASScreenRecorder sharedInstance] stopRecordingWithCompletion:^{
+        
+    }];
+#endif
+    
 }
 
 - (IBAction)didTapGameOverRestartGame:(id)sender {

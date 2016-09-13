@@ -35,7 +35,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *gameOverMessage;
 
 @property NSInteger lastSentCommitTimeStep;
-
+@property NSMutableArray *nextCommitActions;
 
 @end
 

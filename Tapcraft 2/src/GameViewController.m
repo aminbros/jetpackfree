@@ -48,8 +48,8 @@
 - (void)initializeGame {
     if(self.game == nil)
         self.game = [[self.gameClass alloc] initWithGameData:self.gameData];
-    self.gameView.game = self.game;
     self.game.viewSize = self.gameView.frame.size;
+    self.gameView.game = self.game;
 }
 
 - (void)startGame {
